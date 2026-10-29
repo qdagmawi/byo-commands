@@ -36,6 +36,45 @@ const inheritedCommand = {
   isDisplayInput: true,
 };
 const commandFixture = { ...fixture, commands: JSON.stringify({ rewrite: inheritedCommand }) };
+
+test('assigned slot executes its saved prompt and native overrides without a development builder', native, async (t) => {
+  const api = await provider(t);
+  const assigned = { ...inheritedCommand, shortcutSlot: '1' };
+  const app = await launch('command-slot-01', { ...fixture, commands: JSON.stringify({ rewrite: assigned }) }, { ...api.prefs, aiModelOverride: 'slot-model' });
+  t.after(app.close);
+  await app.waitFor(tree => body(tree).kind === 'Detail' && body(tree).markdown === 'Fixture answer' && !body(tree).isLoading);
+  assert.equal(api.requests[0].model, 'slot-model');
+  assert.equal(api.requests[0].messages[0].content, assigned.prompt);
+});
+
+test('unassigned slot offers saved commands instead of running an unrelated prompt', native, async (t) => {
+  const app = await launch('command-slot-02', commandFixture);
+  t.after(app.close);
+  await app.waitFor(page('Assign Command 02'));
+  assert.ok(JSON.stringify(app.tree).includes('Rewrite'));
+  assert.ok(!app.methods.some(item => String(item).includes('openDevelopment')));
+  await select(app, 'rewrite');
+  await action(app, 'Assign to Command 02');
+  await app.waitFor(tree => body(tree).kind === 'Detail' && body(tree).markdown?.includes('Command 02 is ready'));
+  assert.equal(JSON.parse(app.storage.get(CATALOG_STORAGE_KEY)).commands.rewrite.shortcutSlot, '2');
+  assert.ok(actions(app.tree).some(item => item.title === 'Configure Slot Hotkey'));
+});
+
+test('command editor assigns a slot, keeps it on rename and clears it for duplicates', native, async (t) => {
+  const app = await launch('search-ai-command', commandFixture);
+  t.after(app.close);
+  await app.waitFor(tree => body(tree).kind === 'List' && !body(tree).isLoading);
+  await select(app, 'rewrite'); await action(app, 'Edit AI Command');
+  await app.waitFor(page('Edit AI Command'));
+  await change(app, 'shortcutSlot', '3');
+  await change(app, 'name', 'Renamed rewrite');
+  await submit(app, 'Save AI Command');
+  await app.waitFor(tree => body(tree).kind === 'List');
+  assert.equal(JSON.parse(app.storage.get(CATALOG_STORAGE_KEY)).commands.rewrite.shortcutSlot, '3');
+  await select(app, 'rewrite'); await action(app, 'Duplicate AI Command');
+  await app.waitFor(page('Create AI Command'));
+  assert.equal(value(app.tree, 'shortcutSlot'), '');
+});
 const body = (tree) => tree.navigationStack.body;
 const actions = (tree) => tree.actions?.sections.flatMap((s) => s.items) || [];
 const field = (tree, id) => body(tree).items?.find((item) => item.id === id);
