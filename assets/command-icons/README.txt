@@ -1,0 +1,1 @@
+Shared teal gradient tile with white symbols from the locally installed Raycast icon set. Generated for this personal extension. Source: installed Raycast 2.9 frontend SVG sprite. Revisit icon licensing before public redistribution.

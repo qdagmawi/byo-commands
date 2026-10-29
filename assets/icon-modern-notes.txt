@@ -1,0 +1,4 @@
+Generated using the built-in image generation tool.
+Prompt: Create a modern AI Commands app icon combining a command chevron and a compact four-point intelligence spark; sculpted satin-metal edges, electric cyan and cobalt, crisp silhouette, readable at small sizes, transparent background, no text or enclosing tile.
+Source: icon-modern-source.png
+Extension asset: icon-modern.png (512 x 512, transparency preserved).

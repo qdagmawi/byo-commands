@@ -1,0 +1,550 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "personal-ai-commands",
+  "title": "AI Commands",
+  "description": "Personal AI commands with your own providers and models",
+  "icon": "icon-teal.png",
+  "author": "abielzulio",
+  "contributors": [
+    "erodactyl",
+    "pernielsentikaer",
+    "shichongrui",
+    "timolins",
+    "cruelmoney",
+    "sykuang",
+    "thanhlongb",
+    "k8scat",
+    "Nauxscript",
+    "lin",
+    "leeonfield",
+    "husniadil",
+    "luckykong",
+    "smilemachine",
+    "iamEvan",
+    "alex925",
+    "nocdn"
+  ],
+  "pastContributors": [
+    "pomdtr",
+    "Lemon"
+  ],
+  "keywords": [
+    "ai",
+    "commands",
+    "prompts",
+    "gemini",
+    "models"
+  ],
+  "platforms": [
+    "macOS",
+    "Windows"
+  ],
+  "categories": [
+    "Productivity",
+    "Developer Tools"
+  ],
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "fix-spelling-and-grammar",
+      "title": "Fix Spelling and Grammar",
+      "description": "Run this saved AI command. Expand its settings for command-specific overrides.",
+      "mode": "view",
+      "subtitle": "AI Commands",
+      "icon": "command-icons/pencil.png",
+      "preferences": [
+        {
+          "name": "aiProviderOverride",
+          "title": "Provider",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "description": "Use this command's saved provider or override it here. Choose a matching model ID when changing providers.",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Default Provider",
+              "value": "default"
+            }
+          ]
+        },
+        {
+          "name": "aiPromptOverride",
+          "title": "Prompt Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to use the prompt saved in Edit AI Command."
+        },
+        {
+          "name": "aiModelOverride",
+          "title": "Model ID Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to follow this command's saved model configuration."
+        },
+        {
+          "name": "aiTemperatureOverride",
+          "title": "Temperature Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Optional number from 0 to 2. Leave blank to use the saved setting."
+        },
+        {
+          "name": "aiSourceOverride",
+          "title": "Input Source",
+          "description": "Follow the saved input source or override it for this command.",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Selected Text",
+              "value": "selectedText"
+            },
+            {
+              "title": "Clipboard",
+              "value": "clipboard"
+            },
+            {
+              "title": "Browser Tab",
+              "value": "browserTab"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "improve-writing",
+      "title": "Improve Writing",
+      "description": "Run this saved AI command. Expand its settings for command-specific overrides.",
+      "mode": "view",
+      "subtitle": "AI Commands",
+      "icon": "command-icons/action.png",
+      "preferences": [
+        {
+          "name": "aiProviderOverride",
+          "title": "Provider",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "description": "Use this command's saved provider or override it here. Choose a matching model ID when changing providers.",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Default Provider",
+              "value": "default"
+            }
+          ]
+        },
+        {
+          "name": "aiPromptOverride",
+          "title": "Prompt Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to use the prompt saved in Edit AI Command."
+        },
+        {
+          "name": "aiModelOverride",
+          "title": "Model ID Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to follow this command's saved model configuration."
+        },
+        {
+          "name": "aiTemperatureOverride",
+          "title": "Temperature Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Optional number from 0 to 2. Leave blank to use the saved setting."
+        },
+        {
+          "name": "aiSourceOverride",
+          "title": "Input Source",
+          "description": "Follow the saved input source or override it for this command.",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Selected Text",
+              "value": "selectedText"
+            },
+            {
+              "title": "Clipboard",
+              "value": "clipboard"
+            },
+            {
+              "title": "Browser Tab",
+              "value": "browserTab"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "summarize-webpage",
+      "title": "Summarize Webpage",
+      "description": "Run this saved AI command. Expand its settings for command-specific overrides.",
+      "mode": "view",
+      "subtitle": "AI Commands",
+      "icon": "command-icons/action.png",
+      "preferences": [
+        {
+          "name": "aiProviderOverride",
+          "title": "Provider",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "description": "Use this command's saved provider or override it here. Choose a matching model ID when changing providers.",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Default Provider",
+              "value": "default"
+            }
+          ]
+        },
+        {
+          "name": "aiPromptOverride",
+          "title": "Prompt Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to use the prompt saved in Edit AI Command."
+        },
+        {
+          "name": "aiModelOverride",
+          "title": "Model ID Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to follow this command's saved model configuration."
+        },
+        {
+          "name": "aiTemperatureOverride",
+          "title": "Temperature Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Optional number from 0 to 2. Leave blank to use the saved setting."
+        },
+        {
+          "name": "aiSourceOverride",
+          "title": "Input Source",
+          "description": "Follow the saved input source or override it for this command.",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Selected Text",
+              "value": "selectedText"
+            },
+            {
+              "title": "Clipboard",
+              "value": "clipboard"
+            },
+            {
+              "title": "Browser Tab",
+              "value": "browserTab"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "create-ai-command",
+      "title": "Create AI Command",
+      "description": "Create a reusable AI command",
+      "mode": "view",
+      "icon": "icon-teal.png"
+    },
+    {
+      "name": "providers",
+      "title": "Models & Providers",
+      "description": "Manage API keys, endpoints, available models, and defaults",
+      "mode": "view",
+      "icon": "icon-teal.png"
+    },
+    {
+      "name": "ask",
+      "title": "Chat with AI",
+      "subtitle": "Chat",
+      "description": "Start a conversation using your selected provider and model",
+      "mode": "view",
+      "icon": "icon-teal.png"
+    },
+    {
+      "name": "saved",
+      "title": "Saved Answers",
+      "subtitle": "Chat",
+      "description": "Collection of your saved answer",
+      "mode": "view",
+      "icon": "icon-teal.png"
+    },
+    {
+      "name": "history",
+      "title": "History",
+      "subtitle": "Chat",
+      "description": "Collection of your recent answer",
+      "mode": "view",
+      "icon": "icon-teal.png"
+    },
+    {
+      "name": "conversation",
+      "title": "Conversations",
+      "subtitle": "Chat",
+      "description": "Collection of your recent conversation",
+      "mode": "view",
+      "icon": "icon-teal.png"
+    },
+    {
+      "name": "model",
+      "title": "Chat Presets",
+      "subtitle": "Chat",
+      "description": "Manage reusable chat instructions and model settings",
+      "mode": "view",
+      "icon": "icon-teal.png"
+    },
+    {
+      "name": "summarize",
+      "title": "Summarize Website",
+      "subtitle": "AI Commands",
+      "description": "Summarize Website and YouTube video",
+      "mode": "view",
+      "preferences": [
+        {
+          "name": "promptTemplate",
+          "description": "Template support {{content}} tag, and it will replace with the content",
+          "type": "file",
+          "title": "Prompt template for the website",
+          "required": false
+        },
+        {
+          "name": "promptTemplate2",
+          "description": "Template support {{content}} tag, and it will replace with the video transcript",
+          "type": "file",
+          "title": "Prompt template for the YouTube",
+          "required": false
+        }
+      ],
+      "icon": "icon-teal.png"
+    },
+    {
+      "name": "ask-selected-image",
+      "title": "Ask Selected Image",
+      "description": "Ask about an image selected in File Explorer using your default model",
+      "mode": "view",
+      "icon": "icon-teal.png",
+      "arguments": [
+        {
+          "name": "query",
+          "type": "text",
+          "required": false,
+          "placeholder": "What is it?"
+        }
+      ]
+    },
+    {
+      "name": "ask-clipboard-image",
+      "title": "Ask Clipboard Image",
+      "description": "Ask about a clipboard image using your default model",
+      "mode": "view",
+      "icon": "icon-teal.png",
+      "arguments": [
+        {
+          "name": "query",
+          "type": "text",
+          "required": false,
+          "placeholder": "What is it?"
+        }
+      ]
+    },
+    {
+      "name": "search-ai-command",
+      "title": "AI Commands",
+      "description": "Run and manage AI commands",
+      "mode": "view",
+      "icon": "icon-teal.png"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "useStream",
+      "label": "Show answers as they arrive",
+      "description": "Show answers as they arrive",
+      "type": "checkbox",
+      "title": "Stream Responses",
+      "default": true,
+      "required": true
+    },
+    {
+      "name": "isAutoSaveConversation",
+      "label": "Save chat conversations automatically",
+      "description": "Save chat conversations automatically",
+      "type": "checkbox",
+      "title": "Save Conversations",
+      "default": true,
+      "required": true
+    },
+    {
+      "name": "isHistoryPaused",
+      "label": "Stop saving new responses to history",
+      "description": "Stop saving new responses to history",
+      "type": "checkbox",
+      "title": "Pause History",
+      "default": false,
+      "required": false
+    },
+    {
+      "name": "isAutoLoadText",
+      "label": "Prefill chat input with selected text",
+      "description": "Prefill chat input with selected text",
+      "type": "checkbox",
+      "title": "Chat: Use Selected Text",
+      "default": false,
+      "required": false
+    },
+    {
+      "name": "isAutoFullInput",
+      "label": "Open the full input form when starting a chat",
+      "description": "Open the full input form when starting a chat",
+      "type": "checkbox",
+      "title": "Chat: Expanded Input",
+      "default": false,
+      "required": false
+    },
+    {
+      "name": "isAutoTTS",
+      "label": "Speak completed responses",
+      "description": "Speak completed responses",
+      "type": "checkbox",
+      "title": "Read Responses Aloud",
+      "required": false,
+      "default": false
+    },
+    {
+      "name": "useProxy",
+      "label": "Enable proxy for each request",
+      "description": "Each request will be passed through the proxy",
+      "type": "checkbox",
+      "title": "Network: Use Proxy",
+      "required": false,
+      "default": false
+    },
+    {
+      "name": "proxyProtocol",
+      "description": "Each request will be passed through the proxy",
+      "type": "dropdown",
+      "title": "Network: Proxy Protocol",
+      "data": [
+        {
+          "title": "HTTP",
+          "value": "http"
+        },
+        {
+          "title": "HTTPs",
+          "value": "https"
+        },
+        {
+          "title": "Socks4",
+          "value": "socks4"
+        },
+        {
+          "title": "Socks5",
+          "value": "socks5"
+        }
+      ],
+      "required": false,
+      "default": "http"
+    },
+    {
+      "name": "proxyHost",
+      "description": "Server address of the proxy",
+      "type": "textfield",
+      "title": "Network: Proxy Host",
+      "required": false
+    },
+    {
+      "name": "proxyPort",
+      "description": "Server port of the proxy",
+      "type": "textfield",
+      "title": "Network: Proxy Port",
+      "required": false
+    },
+    {
+      "name": "proxyUsername",
+      "description": "Leave empty if doesn't have",
+      "type": "textfield",
+      "title": "Network: Proxy Username",
+      "required": false
+    },
+    {
+      "name": "proxyPassword",
+      "description": "Leave empty if doesn't have",
+      "type": "password",
+      "title": "Network: Proxy Password",
+      "required": false
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.103.0",
+    "@raycast/utils": "^2.2.2",
+    "@types/uuid": "^10.0.0",
+    "cross-fetch": "^4.1.0",
+    "csv-parse": "^5.6.0",
+    "image-meta": "^0.2.1",
+    "moment": "^2.30.1",
+    "openai": "^7.32.0",
+    "plist": "^3.1.0",
+    "proxy-agent": "^6.5.0",
+    "run-applescript": "^7.0.0",
+    "say": "^0.16.0",
+    "uuid": "^9.0.0",
+    "youtube-transcript": "^1.2.1"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "^2.1.1",
+    "@types/plist": "^3.0.5",
+    "@types/node": "^22.19.1",
+    "@types/react": "^19.2.7",
+    "eslint": "^9.39.1",
+    "prettier": "^3.7.3",
+    "typescript": "^5.9.3"
+  },
+  "scripts": {
+    "build": "ray build -e dist --target release",
+    "dev": "ray develop --target release",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint",
+    "publish": "ray publish",
+    "pull": "ray pull-contributions",
+    "test": "node --require ./tests/register.cjs --test tests/*.test.cjs",
+    "check-install": "node scripts/check-install.cjs",
+    "prebuild": "node scripts/configure-local.cjs",
+    "predev": "node scripts/configure-local.cjs"
+  },
+  "version": "0.1.0-preview.1",
+  "private": true,
+  "engines": {
+    "node": ">=22.22.2"
+  }
+}
