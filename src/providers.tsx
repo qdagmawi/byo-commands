@@ -24,7 +24,6 @@ import {
 import { useProviders } from "./hooks/useProviders";
 import { getProviderClient } from "./hooks/api-client";
 import { modelCatalog, useModelCatalog } from "./hooks/useModelCatalog";
-import { syncNativeCommands } from "./utils/native-sync";
 
 async function report(action: () => Promise<void>, title: string) {
   const toast = await showToast({ style: Toast.Style.Animated, title });
@@ -46,15 +45,6 @@ export default function Providers() {
   const onProviderSaved = async (id: string) => {
     await reload();
     await modelCatalog.load();
-    try {
-      await syncNativeCommands(modelCatalog.getSnapshot().catalog.commands);
-    } catch {
-      await showToast({
-        style: Toast.Style.Failure,
-        title: "Provider saved; native choices need refresh",
-        message: "Keep the local development build running and save a command to refresh its preferences.",
-      });
-    }
     push(<ProviderModels providerId={id} />);
   };
   const add = () => push(<ProviderForm onSaved={onProviderSaved} />);

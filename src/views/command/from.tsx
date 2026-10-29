@@ -10,6 +10,7 @@ import { DEFAULT_MODEL } from "../../utils/model-defaults";
 import { resolveCommandSettings } from "../../utils/command-settings";
 import { validateTemperature } from "../../utils/model-validation";
 import { commandIcons, commandIconPath } from "../../utils/command-icons";
+import { commandSlots, commandForSlot, slotTitle } from "../../utils/command-slots";
 
 type CommandFormProps = {
   cmd?: Command;
@@ -53,6 +54,7 @@ function CommandFields(props: CommandFormProps & { models: Record<string, Model>
     : (models[props.baseModelId ?? "default"] ?? DEFAULT_MODEL);
   const { handleSubmit, itemProps, values, setValue, setValidationError } = useForm<CommandValues>({
     initialValues: {
+      shortcutSlot: props.isNew ? "" : (cmd?.shortcutSlot ?? ""),
       icon: cmd?.icon ?? "action",
       providerId: initialSettings.providerId ?? "",
       name: cmd?.name ?? props.name ?? "",
@@ -193,6 +195,18 @@ function CommandFields(props: CommandFormProps & { models: Record<string, Model>
       }
     >
       <Form.TextField title="Name" placeholder="Command name" {...itemProps.name} />
+      <Form.Dropdown
+        title="Hotkey Slot"
+        {...itemProps.shortcutSlot}
+        info="Assign a fixed native entry, then enable it and set its alias or hotkey in Raycast Settings → Extensions → Commands. Slot settings also apply to any prompt later assigned to that slot."
+      >
+        <Form.Dropdown.Item value="" title="None — Run from Commands" />
+        {commandSlots.map((slot) => {
+          const assigned = commandForSlot(props.use.commands.data, slot);
+          if (assigned && (props.isNew || assigned.id !== cmd?.id)) return null;
+          return <Form.Dropdown.Item key={slot} value={slot} title={slotTitle(slot)} />;
+        })}
+      </Form.Dropdown>
       <Form.Dropdown
         title="Icon"
         {...itemProps.icon}

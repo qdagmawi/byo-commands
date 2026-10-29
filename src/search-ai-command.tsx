@@ -16,6 +16,7 @@ import { DEFAULT_COMMANDS, useCommand } from "./hooks/useCommand";
 import { CommandForm, iconsByContentSource } from "./views/command/from";
 import CommandView, { CommandLaunchProps } from "./views/command/command-view";
 import { commandIconPath } from "./utils/command-icons";
+import { slotTitle } from "./utils/command-slots";
 
 export default function EntryPoint(props: CommandLaunchProps) {
   const requestModelId = props.launchContext?.commandId;
@@ -58,7 +59,7 @@ export function SearchAiCommand() {
 
       <ActionPanel.Section>
         <Action
-          title={"Open Native Command Settings"}
+          title={cmd.shortcutSlot ? `Configure ${slotTitle(cmd.shortcutSlot)} Hotkey` : "Open Native Command Settings"}
           icon={Icon.Keyboard}
           onAction={() => openExtensionPreferences()}
         />
@@ -152,6 +153,7 @@ export function SearchAiCommand() {
               title={cmd.name}
               icon={commandIconPath(cmd.icon)}
               accessories={[
+                ...(cmd.shortcutSlot ? [{ text: slotTitle(cmd.shortcutSlot) }] : []),
                 { icon: iconsByContentSource[cmd.contentSource] },
                 { text: commands.resolveModel(cmd).option },
               ]}
@@ -169,6 +171,7 @@ export function SearchAiCommand() {
               title={cmd.name}
               icon={commandIconPath(cmd.icon)}
               accessories={[
+                ...(cmd.shortcutSlot ? [{ text: slotTitle(cmd.shortcutSlot) }] : []),
                 { icon: iconsByContentSource[cmd.contentSource] },
                 { text: commands.resolveModel(cmd).option },
               ]}

@@ -1,6 +1,7 @@
 import type { Command, Model, ReasoningEffort } from "../type";
 import { COMMAND_MODEL_PREFIX, DEFAULT_COMMANDS, DEFAULT_MODEL } from "./model-defaults";
 import { resolveCommandSettings } from "./command-settings";
+import { validateCommandSlot } from "./command-slots";
 
 export const CATALOG_STORAGE_KEY = "model-command-catalog-v1";
 export type Catalog = { version: 1; models: Record<string, Model>; commands: Record<string, Command> };
@@ -39,6 +40,7 @@ export function normalizeModels(stored: StoredModel[] | Record<string, StoredMod
 // Legacy commands owned their chat parameters; preserve them as independent settings.
 // Commands already linked to a base keep their existing inheritance relationship.
 export function attachCommand(catalog: Catalog, command: Command, timestamp: string): Catalog {
+  validateCommandSlot(catalog.commands, command);
   command = {
     ...command,
     configurationMode: command.configurationMode ?? (command.baseModelId ? "inherit" : "independent"),

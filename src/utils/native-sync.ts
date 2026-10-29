@@ -23,9 +23,7 @@ export async function syncNativeCommands(commands: Record<string, Command>) {
     if (!Number.isInteger(pid) || pid <= 0) throw new Error("Invalid development process");
     process.kill(pid, 0);
   } catch {
-    throw new Error(
-      "Start npm run dev in the local Commands project to register saved commands in Raycast Settings.",
-    );
+    throw new Error("Start npm run dev in the local Commands project to register saved commands in Raycast Settings.");
   }
   const providers = (await readProviders()).providers.map(({ id, name }) => ({ id, name }));
   await syncNativeProject(

@@ -48,6 +48,7 @@ export type ReasoningEffort = "none" | "low" | "medium" | "high";
 export type CommandContentSource = "clipboard" | "selectedText" | "browserTab";
 
 export interface Command {
+  shortcutSlot?: string;
   icon?: string;
   providerId?: string;
   created_at?: string;

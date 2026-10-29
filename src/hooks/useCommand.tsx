@@ -11,11 +11,10 @@ export {
 } from "../utils/model-defaults";
 
 const actions = {
-  add: (command: Command) => saveConfiguration(() => modelCatalog.saveCommand(command), "AI command saved", true),
-  update: (command: Command) => saveConfiguration(() => modelCatalog.saveCommand(command), "AI command updated", true),
-  remove: (command: Command) =>
-    saveConfiguration(() => modelCatalog.removeCommand(command), "AI command removed", true),
-  clear: () => saveConfiguration(() => modelCatalog.setCommands(DEFAULT_COMMANDS), "AI commands reset", true),
+  add: (command: Command) => saveConfiguration(() => modelCatalog.saveCommand(command), "AI command saved"),
+  update: (command: Command) => saveConfiguration(() => modelCatalog.saveCommand(command), "AI command updated"),
+  remove: (command: Command) => saveConfiguration(() => modelCatalog.removeCommand(command), "AI command removed"),
+  clear: () => saveConfiguration(() => modelCatalog.setCommands(DEFAULT_COMMANDS), "AI commands reset"),
   setCommand: modelCatalog.setCommands,
   isDefault: (id: string) => id in DEFAULT_COMMANDS,
   resolveModel: modelCatalog.resolveModel,
