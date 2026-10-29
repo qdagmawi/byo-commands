@@ -43,3 +43,33 @@ test('existing prompts remain unassigned and settings survive slot assignment', 
   assert.equal(next.commands.custom.prompt,'Rewrite');
   assert.equal(next.commands.legacy.shortcutSlot,undefined);
 });
+
+test('new commands automatically get the first free slot; full capacity still allows saving', async () => {
+  const storage=new Map();
+  const store=createModelCatalog({getItem:async k=>storage.get(k),setItem:async(k,v)=>storage.set(k,v)});
+  await store.load();
+  for(let i=1;i<=21;i++) await store.saveCommand({...prompt,id:'auto-'+i,shortcutSlot:'auto'});
+  let commands=store.getSnapshot().catalog.commands;
+  for(let i=1;i<=20;i++) assert.equal(commands['auto-'+i].shortcutSlot,String(i));
+  assert.equal(commands['auto-21'].shortcutSlot,'');
+  await store.removeCommand(commands['auto-4']);
+  await store.saveCommand({...prompt,id:'replacement',shortcutSlot:'auto'});
+  commands=store.getSnapshot().catalog.commands;
+  assert.equal(commands.replacement.shortcutSlot,'4');
+  assert.equal(commands['auto-21'].shortcutSlot,'');
+});
+
+test('automatic slot allocation uses the latest storage and preserves explicitly unassigned prompts', async () => {
+  const storage=new Map(),io={getItem:async k=>storage.get(k),setItem:async(k,v)=>storage.set(k,v)};
+  const first=createModelCatalog(io),second=createModelCatalog(io);
+  await first.load();await second.load();
+  await first.saveCommand({...prompt,id:'one',shortcutSlot:'auto'});
+  await second.saveCommand({...prompt,id:'two',shortcutSlot:'auto'});
+  await second.saveCommand({...prompt,id:'none',shortcutSlot:''});
+  const commands=second.getSnapshot().catalog.commands;
+  assert.equal(commands.one.shortcutSlot,'1');
+  assert.equal(commands.two.shortcutSlot,'2');
+  assert.equal(commands.none.shortcutSlot,'');
+  await second.saveCommand({...commands.two,name:'Renamed'});
+  assert.equal(second.getSnapshot().catalog.commands.two.shortcutSlot,'2');
+});

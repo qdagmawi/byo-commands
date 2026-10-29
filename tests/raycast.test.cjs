@@ -47,6 +47,17 @@ test('assigned slot executes its saved prompt and native overrides without a dev
   assert.equal(api.requests[0].messages[0].content, assigned.prompt);
 });
 
+if (process.env.RAYCAST_PREBUILT_DIR) test('prebuilt folder command executes with only Raycast runtime dependencies', native, async (t) => {
+  const api = await provider(t);
+  const assigned = { ...inheritedCommand, shortcutSlot: '1' };
+  const app = await launch('command-slot-01', { ...fixture, commands: JSON.stringify({ rewrite: assigned }) }, api.prefs, {
+    compiledPath: require('node:path').join(process.env.RAYCAST_PREBUILT_DIR, 'command-slot-01.js'),
+  });
+  t.after(app.close);
+  await app.waitFor(tree => body(tree).kind === 'Detail' && body(tree).markdown === 'Fixture answer' && !body(tree).isLoading);
+  assert.equal(api.requests[0].model, assigned.model);
+});
+
 test('unassigned slot offers saved commands instead of running an unrelated prompt', native, async (t) => {
   const app = await launch('command-slot-02', commandFixture);
   t.after(app.close);
@@ -73,7 +84,7 @@ test('command editor assigns a slot, keeps it on rename and clears it for duplic
   assert.equal(JSON.parse(app.storage.get(CATALOG_STORAGE_KEY)).commands.rewrite.shortcutSlot, '3');
   await select(app, 'rewrite'); await action(app, 'Duplicate AI Command');
   await app.waitFor(page('Create AI Command'));
-  assert.equal(value(app.tree, 'shortcutSlot'), '');
+  assert.equal(value(app.tree, 'shortcutSlot'), 'auto');
 });
 const body = (tree) => tree.navigationStack.body;
 const actions = (tree) => tree.actions?.sections.flatMap((s) => s.items) || [];
@@ -231,6 +242,7 @@ test(
     await app.waitFor((tree) => body(tree).kind === "List");
     const catalog = JSON.parse(app.storage.get(CATALOG_STORAGE_KEY));
     const saved = Object.values(catalog.commands).find((cmd) => cmd.name === "Independent rewrite");
+    assert.equal(saved.shortcutSlot, "1", "new prompts automatically receive the first available slot");
     assert.equal(saved.configurationMode, "independent");
     assert.equal(saved.baseModelId, undefined);
     assert.ok(Number.isFinite(Date.parse(saved.created_at)));

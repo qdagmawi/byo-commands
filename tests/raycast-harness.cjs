@@ -12,7 +12,7 @@ const apiRoot =
 const available = fs.existsSync(path.join(apiRoot, "node_modules/@raycast/api/index.js"));
 
 async function launch(entry, initialStorage = {}, preferenceOverrides = {}, options = {}) {
-  const { supportDirectory, launchContext, initialCache, browserExtension = false, clipboardFile } = options;
+  const { supportDirectory, launchContext, initialCache, browserExtension = false, clipboardFile, compiledPath } = options;
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "chatgpt-runtime-test-"));
   fs.mkdirSync(path.join(dir, "support"));
   fs.symlinkSync(
@@ -22,7 +22,8 @@ async function launch(entry, initialStorage = {}, preferenceOverrides = {}, opti
   );
   const sdkRequire = createRequire(require.resolve("@raycast/api/package.json"));
   const esbuild = sdkRequire("esbuild");
-  await esbuild.build({
+  if (compiledPath) fs.copyFileSync(compiledPath, path.join(dir, "command.cjs"));
+  else await esbuild.build({
     ...(initialCache
       ? {
           stdin: {
