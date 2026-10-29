@@ -8,6 +8,12 @@ export function commandForSlot(commands: Record<string, Command>, slot: string) 
   return Object.values(commands).find((command) => command.shortcutSlot === slot);
 }
 
+export function automaticallyAssignSlot(commands: Record<string, Command>, command: Command): Command {
+  const existing = commands[command.id];
+  const slot = existing?.shortcutSlot || commandSlots.find((value) => !commandForSlot(commands, value)) || "";
+  return { ...command, shortcutSlot: slot };
+}
+
 export function validateCommandSlot(commands: Record<string, Command>, command: Command) {
   if (!command.shortcutSlot) return;
   if (!commandSlots.includes(command.shortcutSlot)) throw new Error("Choose a slot from 1 to 20.");

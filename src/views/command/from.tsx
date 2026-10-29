@@ -54,7 +54,8 @@ function CommandFields(props: CommandFormProps & { models: Record<string, Model>
     : (models[props.baseModelId ?? "default"] ?? DEFAULT_MODEL);
   const { handleSubmit, itemProps, values, setValue, setValidationError } = useForm<CommandValues>({
     initialValues: {
-      shortcutSlot: props.isNew ? "" : (cmd?.shortcutSlot ?? ""),
+      shortcutSlot:
+        props.isNew || !cmd ? "auto" : (cmd.shortcutSlot ?? (props.use.commands.isDefault(cmd.id) ? "" : "auto")),
       icon: cmd?.icon ?? "action",
       providerId: initialSettings.providerId ?? "",
       name: cmd?.name ?? props.name ?? "",
@@ -198,8 +199,9 @@ function CommandFields(props: CommandFormProps & { models: Record<string, Model>
       <Form.Dropdown
         title="Hotkey Slot"
         {...itemProps.shortcutSlot}
-        info="Assign a fixed native entry, then enable it and set its alias or hotkey in Raycast Settings → Extensions → Commands. Slot settings also apply to any prompt later assigned to that slot."
+        info="Automatic uses the first free slot when saving. If all 20 slots are occupied, the command is saved without one. Enable the assigned slot and set its alias/hotkey in Raycast Settings → Extensions → Commands. Native overrides stay attached to the slot."
       >
+        <Form.Dropdown.Item value="auto" title="Automatic — First Available Slot" />
         <Form.Dropdown.Item value="" title="None — Run from Commands" />
         {commandSlots.map((slot) => {
           const assigned = commandForSlot(props.use.commands.data, slot);

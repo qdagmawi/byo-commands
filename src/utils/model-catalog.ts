@@ -1,7 +1,7 @@
 import type { Command, Model, ReasoningEffort } from "../type";
 import { COMMAND_MODEL_PREFIX, DEFAULT_COMMANDS, DEFAULT_MODEL } from "./model-defaults";
 import { resolveCommandSettings } from "./command-settings";
-import { validateCommandSlot } from "./command-slots";
+import { automaticallyAssignSlot, validateCommandSlot } from "./command-slots";
 
 export const CATALOG_STORAGE_KEY = "model-command-catalog-v1";
 export type Catalog = { version: 1; models: Record<string, Model>; commands: Record<string, Command> };
@@ -240,7 +240,16 @@ export function createModelCatalog(storage: Storage, now: () => Date = () => new
         }
         return replaceModels(current, normalizeModels(imported, timestamp));
       }),
-    saveCommand: (command: Command) => change((current, timestamp) => attachCommand(current, command, timestamp)),
+    saveCommand: (command: Command) =>
+      change((current, timestamp) =>
+        attachCommand(
+          current,
+          command.shortcutSlot === "auto" || (command.shortcutSlot === undefined && !(command.id in DEFAULT_COMMANDS))
+            ? automaticallyAssignSlot(current.commands, command)
+            : command,
+          timestamp,
+        ),
+      ),
     removeCommand: (command: Command) =>
       change((current) => {
         const commands = { ...current.commands };
