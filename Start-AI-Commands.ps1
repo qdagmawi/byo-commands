@@ -15,7 +15,7 @@ $runtimeDirectory = Join-Path $projectDirectory '.runtime'
 New-Item -ItemType Directory -Force -Path $runtimeDirectory | Out-Null
 $process = Start-Process -FilePath $env:ComSpec -ArgumentList '/d /c npm run dev' -WorkingDirectory $projectDirectory -WindowStyle Hidden -RedirectStandardOutput (Join-Path $runtimeDirectory 'develop.out.log') -RedirectStandardError (Join-Path $runtimeDirectory 'develop.err.log') -PassThru
 Set-Content -LiteralPath (Join-Path $runtimeDirectory 'launcher.pid') -Value $process.Id
-Write-Output 'AI Commands local builder started in the background.'
-Write-Output 'Open Raycast and search for AI Commands or Models & Providers.'
+Write-Output 'Commands local builder started in the background.'
+Write-Output 'Open Raycast and search for Commands or Models & Providers.'
 Write-Output 'The builder must remain running for newly saved commands to appear in native Settings.'
 Write-Output ('Logs: ' + $runtimeDirectory)

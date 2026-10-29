@@ -1,4 +1,4 @@
-# AI Commands 0.1.0-preview.1 — Windows
+# Commands 0.1.0-preview.1 — Windows
 
 ## Which package to use
 
@@ -6,7 +6,7 @@
 
 Keeping that builder running allows new saved prompts to become native command entries with enabled state, aliases, hotkeys, and expandable per-command settings. Restart the launcher after signing back into Windows; this preview does not install a startup task or service. Paths are configured automatically for the folder you extract to.
 
-**.rayext — direct-install snapshot.** Open it with Raycast, or use Raycast's extension import UI. It contains compiled code, icons, the three built-in commands, and command/provider management. No Node.js installation is needed just to run that snapshot. Saved custom prompts remain runnable inside AI Commands, but automatically adding their own native Settings entries requires the source package and its running builder. Installing the snapshot alone does not include a background compiler.
+**.rayext — direct-install snapshot.** Open it with Raycast, or use Raycast's extension import UI. It contains compiled code, icons, the three built-in commands, and command/provider management. No Node.js installation is needed just to run that snapshot. Saved custom prompts remain runnable inside Commands, but automatically adding their own native Settings entries requires the source package and its running builder. Installing the snapshot alone does not include a background compiler.
 
 ## Set up AI
 

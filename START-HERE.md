@@ -1,10 +1,10 @@
-# AI Commands — local Windows fork
+# Commands — local Windows fork
 
 ## Custom commands and expandable settings
 
-Open **Create AI Command** or **AI Commands** to create/edit a saved prompt. Each save generates a real command entry in this local extension's manifest and source. The running development process rebuilds and refreshes Raycast's registered commands.
+Open **Create AI Command** or **Commands** to create/edit a saved prompt. Each save generates a real command entry in this local extension's manifest and source. The running development process rebuilds and refreshes Raycast's registered commands.
 
-In **Raycast Settings → Extensions → AI Commands**, expand/select the individual command just as you do with **Summarize Website**. Raycast owns its enable checkbox, alias, and hotkey controls. Command-specific preferences include:
+In **Raycast Settings → Extensions → Commands**, expand/select the individual command just as you do with **Summarize Website**. Raycast owns its enable checkbox, alias, and hotkey controls. Command-specific preferences include:
 
 - Provider override
 - Prompt override

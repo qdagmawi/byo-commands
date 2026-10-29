@@ -269,7 +269,7 @@ class CommandViewBuilder {
 function buildCommandNotFoundView(commandId: string) {
   return (
     <Detail
-      markdown={`This AI command is no longer available. Open AI Commands to select or create a command.\n\nCommand ID: ${commandId}`}
+      markdown={`This AI command is no longer available. Open Commands to select or create a command.\n\nCommand ID: ${commandId}`}
     />
   );
 }

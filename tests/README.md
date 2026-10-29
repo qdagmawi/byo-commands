@@ -66,7 +66,7 @@ Mode changes clear obsolete model/temperature errors while preserving unrelated 
 | Independent configuration      | test                 | Save without a base, preserve every parameter on reload, no extra preset, unaffected by base edits; creation time stays stable and edits advance update time                                   | Store integration           |
 | Per-setting overrides          | test                 | Each overridden value wins (including zero/false/empty); other values track base edits; clearing overrides resumes inheritance; base remains unchanged                                         | Store integration           |
 | Dependency mode changes        | test                 | Detach releases the base for deletion/import; explicit inheritance requires a valid base; legacy behavior stays covered                                                                        | Store integration           |
-| Direct creation                | test                 | AI Commands starts independent, custom fields validate, save and run use the chosen parameters, Continue in Chat uses the same configuration                                                   | Raycast runtime integration |
+| Direct creation                | test                 | Commands starts independent, custom fields validate, save and run use the chosen parameters, Continue in Chat uses the same configuration                                                   | Raycast runtime integration |
 | Inherited form and mode switch | update-existing      | Creation from Models starts inherited with editable effective values; direct edits replace checkbox activation; reset one/all in actions replaces unchecking; base edits and detach still work | Raycast runtime integration |
 | Model choice                   | test                 | Command's shared selector loads remote options and saves selected ID; manual input covered by direct creation                                                                                  | Raycast runtime integration |
 | Temperature validation         | test                 | Empty/nonfinite/out-of-range rejected; zero and two accepted                                                                                                                                   | Unit                        |
@@ -100,7 +100,7 @@ Additional conditions verified:
 
 The standalone Create AI Command entry is retired (`no-test`): its manifest registration and pass-through entry file are removed, checked by the extension build and manifest inspection. Creation from Models is `existing-test-enough`: the Models-to-Command runtime test observes the selected base, saved command and return selection, and fails if that action or save callback is removed.
 
-The command title is renamed from Search AI Command to AI Commands (`no-test`): this is display copy only; the `search-ai-command` identifier and quicklink targets are unchanged. Verified by manifest inspection and extension build.
+The command title is renamed from Search AI Command to Commands (`no-test`): this is display copy only; the `search-ai-command` identifier and quicklink targets are unchanged. Verified by manifest inspection and extension build.
 
 Review follow-up scope:
 
@@ -108,7 +108,7 @@ Review follow-up scope:
 | ------------------------------ | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
 | Default command initialization | test            | Fresh install has only the Default chat preset; reset and Delete All restore independent built-ins without accumulating presets                   | Store integration   |
 | Legacy import compatibility    | test            | Older array backups retain missing referenced bases, remove unreferenced models, ignore command projections, and update explicitly imported bases | Store integration   |
-| AI Commands write failures     | test            | Remove, Reset and Delete All report a failed write without changing saved data or crashing; a later successful removal works                      | Runtime integration |
+| Commands write failures     | test            | Remove, Reset and Delete All report a failed write without changing saved data or crashing; a later successful removal works                      | Runtime integration |
 | Import confirmation            | update-existing | Cancel settles without writing or closing the form; write failure keeps the form; retry saves, closes and survives reload                         | Runtime integration |
 | Conversation import callers    | test            | Both empty and populated list entries preserve data on cancel; confirmed import updates the list and storage                                      | Runtime integration |
 | Existing Quicklinks            | test            | Serialized launch context selects a legacy command; the request preserves its settings and Continue selects its command model                     | Runtime integration |

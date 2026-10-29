@@ -21,7 +21,7 @@ export async function syncNativeProject(
   return withDirectoryLock(root, ".native-commands.lock", async () => {
     const manifestPath = join(root, "package.json");
     const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
-    if (manifest.name !== "personal-ai-commands") throw new Error("This is not the personal AI Commands project.");
+    if (manifest.name !== "personal-ai-commands") throw new Error("This is not the personal Commands project.");
     const commands = Object.values(await readCommands());
     const owned = new Set(Object.values(nativeBuiltIns));
     const management = manifest.commands.filter(
@@ -44,7 +44,7 @@ export async function syncNativeProject(
       title: command.name,
       description: "Run this saved AI command. Expand its settings for command-specific overrides.",
       mode: "view",
-      subtitle: "AI Commands",
+      subtitle: "Commands",
       icon: commandIconPath(command.icon),
       preferences: [
         {

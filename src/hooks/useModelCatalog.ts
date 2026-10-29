@@ -28,7 +28,7 @@ export async function saveConfiguration(action: () => Promise<void>, title: stri
         const commands = modelCatalog.getSnapshot().catalog.commands;
         if (!(await syncNativeCommands(commands))) {
           if (environment.extensionName === "personal-ai-commands") {
-            await showToast({ title, message: "Saved in AI Commands. Native Settings entries require the source package running in local mode.", style: Toast.Style.Success });
+            await showToast({ title, message: "Saved in Commands. Native Settings entries require the source package running in local mode.", style: Toast.Style.Success });
             return;
           }
           await syncLaunchers(commands);

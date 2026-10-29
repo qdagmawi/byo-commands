@@ -16,7 +16,7 @@ for(const c of manifest.commands){
  for(const pref of c.preferences||[])if(pref.name==='aiProviderOverride')pref.data=pref.data.filter(x=>x.value==='saved'||x.value==='default');
 }
 fs.writeFileSync(path.join(output,'package.json'),JSON.stringify(manifest,null,2)+'\n');
-const genericReadme='# AI Commands\n\nWindows personal preview. Start with INSTALL.md for package selection, installation and the local-builder requirement. RELEASE-NOTES.md describes scope and limitations.\n\nMIT source fork of https://github.com/raycast/extensions/tree/main/extensions/chatgpt. Original attribution is retained in LICENSE and package.json.\n';
+const genericReadme='# Commands\n\nWindows personal preview. Start with INSTALL.md for package selection, installation and the local-builder requirement. RELEASE-NOTES.md describes scope and limitations.\n\nMIT source fork of https://github.com/raycast/extensions/tree/main/extensions/chatgpt. Original attribution is retained in LICENSE and package.json.\n';
 fs.writeFileSync(path.join(output,'README.md'),genericReadme);
 const lock=JSON.parse(fs.readFileSync(path.join(root,'package-lock.json'),'utf8'));
 const licenses=Object.entries(lock.packages).filter(([name])=>name).map(([name,p])=>`${name.replace(/^node_modules\//,'')} ${p.version||''} — ${p.license||'see dependency license'}`).sort().join('\n');

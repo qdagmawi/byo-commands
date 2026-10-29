@@ -1,7 +1,7 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "personal-ai-commands",
-  "title": "AI Commands",
+  "title": "Commands",
   "description": "Personal AI commands with your own providers and models",
   "icon": "icon-teal.png",
   "author": "abielzulio",
@@ -50,7 +50,7 @@
       "title": "Fix Spelling and Grammar",
       "description": "Run this saved AI command. Expand its settings for command-specific overrides.",
       "mode": "view",
-      "subtitle": "AI Commands",
+      "subtitle": "Commands",
       "icon": "command-icons/pencil.png",
       "preferences": [
         {
@@ -125,7 +125,7 @@
       "title": "Improve Writing",
       "description": "Run this saved AI command. Expand its settings for command-specific overrides.",
       "mode": "view",
-      "subtitle": "AI Commands",
+      "subtitle": "Commands",
       "icon": "command-icons/action.png",
       "preferences": [
         {
@@ -200,7 +200,7 @@
       "title": "Summarize Webpage",
       "description": "Run this saved AI command. Expand its settings for command-specific overrides.",
       "mode": "view",
-      "subtitle": "AI Commands",
+      "subtitle": "Commands",
       "icon": "command-icons/action.png",
       "preferences": [
         {
@@ -327,7 +327,7 @@
     {
       "name": "summarize",
       "title": "Summarize Website",
-      "subtitle": "AI Commands",
+      "subtitle": "Commands",
       "description": "Summarize Website and YouTube video",
       "mode": "view",
       "preferences": [
@@ -380,7 +380,7 @@
     },
     {
       "name": "search-ai-command",
-      "title": "AI Commands",
+      "title": "Commands",
       "description": "Run and manage AI commands",
       "mode": "view",
       "icon": "icon-teal.png"

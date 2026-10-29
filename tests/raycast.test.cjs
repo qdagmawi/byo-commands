@@ -145,7 +145,7 @@ async function createDirectCommand(app, name) {
 }
 
 test(
-  "AI Commands creates an independent command after model discovery fails, validates it and runs its own settings",
+  "Commands creates an independent command after model discovery fails, validates it and runs its own settings",
   native,
   async (t) => {
     const api = await provider(t, 404);
@@ -336,7 +336,7 @@ test(
 );
 
 test(
-  "AI Commands handles failed remove, reset and delete-all writes and remains usable for retry",
+  "Commands handles failed remove, reset and delete-all writes and remains usable for retry",
   native,
   async (t) => {
     const { DEFAULT_COMMANDS } = require("../src/utils/model-defaults.ts");

@@ -11,7 +11,7 @@
 - [ChatGPT extension](https://github.com/raycast/extensions/tree/main/extensions/chatgpt): saved-command configuration, inheritance, selected-text input and Quicklinks.
 - [Google compatibility endpoint](https://ai.google.dev/gemini-api/docs/openai): Gemini key, endpoint and model ID must match.
 
-The stock ChatGPT extension uses Quicklinks. Our generated Script Commands combine documented scripts and deeplinks; this integration is custom, not native Raycast AI Commands.
+The stock ChatGPT extension uses Quicklinks. Our generated Script Commands combine documented scripts and deeplinks; this integration is custom, not native Raycast Commands.
 
 ## Fixed
 
@@ -49,7 +49,7 @@ Compilation and bridge tests do not prove OS hotkeys or foreground focus behavio
 
 ## Settings/native entry update
 
-A dedicated AI Commands Settings command opens Commands and Models & Providers directly. Built-in grammar, writing, and webpage-summary prompts now also have static manifest entries; their hotkeys are configured normally in Raycast without script registration. Runtime tests cover Settings navigation and the native grammar request path. Arbitrary saved prompts still cannot be registered dynamically using the documented API. The optional script route remains explicitly labeled as a workaround. The management screens are an extension-owned Settings hub, not custom panes embedded in Raycast’s global Settings.
+A dedicated Commands Settings command opens Commands and Models & Providers directly. Built-in grammar, writing, and webpage-summary prompts now also have static manifest entries; their hotkeys are configured normally in Raycast without script registration. Runtime tests cover Settings navigation and the native grammar request path. Arbitrary saved prompts still cannot be registered dynamically using the documented API. The optional script route remains explicitly labeled as a workaround. The management screens are an extension-owned Settings hub, not custom panes embedded in Raycast’s global Settings.
 
 ## Expandable per-command Settings correction
 

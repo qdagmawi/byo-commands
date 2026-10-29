@@ -210,7 +210,7 @@ export default function Model() {
           />
           <ModelListView
             key="ai-commands"
-            title="AI Commands"
+            title="Commands"
             models={commandModelsOnly}
             selectedModel={selectedModelId}
             actionPanel={getActionPanel}
