@@ -1,6 +1,7 @@
 param(
   [Parameter(Mandatory=$true)][string]$StageDirectory,
-  [Parameter(Mandatory=$true)][string]$ReleaseDirectory
+  [Parameter(Mandatory=$true)][string]$ReleaseDirectory,
+  [string]$BundlePath
 )
 $ErrorActionPreference = 'Stop'
 $buildUserPath = $env:USERPROFILE.Replace('\','/')
@@ -8,9 +9,10 @@ $stage = (Resolve-Path -LiteralPath $StageDirectory).Path
 $release = (Resolve-Path -LiteralPath $ReleaseDirectory).Path
 $manifest = Get-Content -LiteralPath (Join-Path $stage 'package.json') -Raw | ConvertFrom-Json
 $baseName = 'commands-' + $manifest.version
-$bundle = Join-Path $release ($baseName + '.rayext')
+$bundle = if ($BundlePath) { (Resolve-Path -LiteralPath $BundlePath).Path } else { Join-Path $release ($baseName + '.rayext') }
+$installZipPath = Join-Path $release ($baseName + '-windows.zip')
 $zipPath = Join-Path $release ($baseName + '-source.zip')
-if (Test-Path -LiteralPath $zipPath) { throw 'Source ZIP already exists; choose a fresh release directory.' }
+if ((Test-Path -LiteralPath $zipPath) -or (Test-Path -LiteralPath $installZipPath)) { throw 'Release ZIP already exists; choose a fresh release directory.' }
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 
 # Distribution does not need debug maps containing build-machine paths.
@@ -45,6 +47,22 @@ try {
   Write-Output "Verified $($bundledManifest.commands.Count) executables including 20 slots."
 } finally { $archive.Dispose() }
 
+# Public Windows builds import directories; bundle-file import is internal-only.
+$archive = [IO.Compression.ZipFile]::OpenRead($bundle)
+$installZip = [IO.Compression.ZipFile]::Open($installZipPath, [IO.Compression.ZipArchiveMode]::Create)
+try {
+  foreach ($item in $archive.Entries) {
+    if ($item.FullName.EndsWith('/')) { continue }
+    $target = $installZip.CreateEntry('Commands/' + $item.FullName, [IO.Compression.CompressionLevel]::Optimal)
+    $inputStream = $item.Open()
+    $outputStream = $target.Open()
+    try { $inputStream.CopyTo($outputStream) } finally { $inputStream.Dispose(); $outputStream.Dispose() }
+  }
+  foreach ($name in @('INSTALL.md','RELEASE-NOTES.md','VALIDATION.md','LICENSE','THIRD-PARTY-NOTICES.txt')) {
+    [IO.Compression.ZipFileExtensions]::CreateEntryFromFile($installZip, (Join-Path $stage $name), ('Commands/' + $name), [IO.Compression.CompressionLevel]::Optimal) | Out-Null
+  }
+} finally { $archive.Dispose(); $installZip.Dispose() }
+
 $zip = [IO.Compression.ZipFile]::Open($zipPath, [IO.Compression.ZipArchiveMode]::Create)
 try {
   Get-ChildItem -LiteralPath $stage -Recurse -File -Force | Where-Object {
@@ -62,5 +80,5 @@ foreach ($name in @('INSTALL.md','RELEASE-NOTES.md','VALIDATION.md')) {
   $file = Join-Path $stage $name
   if (Test-Path -LiteralPath $file) { Copy-Item -LiteralPath $file -Destination $release }
 }
-Get-FileHash -LiteralPath $bundle,$zipPath -Algorithm SHA256 | ForEach-Object { "$($_.Hash.ToLower())  $([IO.Path]::GetFileName($_.Path))" } | Set-Content -LiteralPath (Join-Path $release 'SHA256SUMS.txt')
+Get-FileHash -LiteralPath $installZipPath,$zipPath -Algorithm SHA256 | ForEach-Object { "$($_.Hash.ToLower())  $([IO.Path]::GetFileName($_.Path))" } | Set-Content -LiteralPath (Join-Path $release 'SHA256SUMS.txt')
 Get-ChildItem -LiteralPath $release | Select-Object Name,Length

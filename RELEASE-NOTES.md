@@ -1,5 +1,7 @@
-# Release notes — 0.2.0-preview.1
+# Release notes — 0.2.1-preview.1
 
+- Automatically assign the first free slot on save; full capacity saves the prompt without displacing existing assignments.
+- Replace unsupported public Windows .rayext installation with a prebuilt directory ZIP. The local Development badge may remain; no builder is required.
 - 20 predefined native slots replace source/manifest regeneration during command saves.
 - Assign, release or reassign slots in the prompt editor without a development builder.
 - Each slot has native enabled state, aliases, hotkeys and preferences. Native names/icons are fixed.

@@ -1,11 +1,11 @@
-# Validation — 0.2.0-preview.1
+# Validation — 0.2.1-preview.1
 
-- 84 automated tests passed, zero failures and zero skipped tests.
-- Native-runtime checks execute with the installed Windows Raycast JavaScript runtime, isolated storage, fake credentials and local HTTP fixtures.
-- New coverage: fixed slot manifest, assignment persistence, slot conflicts, deletion and reuse, legacy prompt migration, native overrides, empty-slot assignment, renamed prompts and duplicate behavior.
-- TypeScript build passed. Lint completed with zero errors and 12 existing warnings.
-- Distribution checks verify 20 predefined slots, compiled executables, sanitized provider choices and exclusion of personal generated entries and machine-path markers. Debug source maps are omitted from the release.
-- Slot assignment and command/provider saves no longer invoke source generation, script synchronization or the development builder.
-- Desktop package import, Development badge transition, actual OS hotkeys and foreground-selection handoff across real applications remain unverified.
-- Prior dependency audit: 8 unresolved findings (2 low, 2 moderate, 4 high). Dependencies were not upgraded in this change.
-- No personal keys, provider profiles or custom prompt definitions are included in the release. Existing storage identifiers are retained.
+- 86 automated tests passed, zero failures or skipped tests, including native Windows Raycast runtime checks with fake credentials and local HTTP fixtures.
+- An expanded run with the prebuilt-package check passed 86 of 87 tests; one existing multi-turn chat test timed out. Both that test and the prebuilt-package check passed on the focused retry. The timeout remains a test-stability limitation, not a clean 87-test suite claim.
+- Automatic allocation covers first available slot, capacity overflow, reuse of released slots, preservation of explicit unassignment and latest-storage reads. Runtime creation checks automatic defaults; duplicates use Automatic and retain no original slot ownership.
+- The installed Windows 2.9 import-path validator was extracted without modifying Raycast and exercised against the original .rayext and an existing directory. The former reproduces the internal-build-only rejection; the latter is accepted.
+- Prebuilt distribution uses a ZIP with a Commands directory, sanitized manifest, all 34 compiled commands and runtime dependencies. Source maps and machine-specific markers are excluded.
+- The installed importer copy routine was exercised without changing the app. It retained all 34 self-contained executables. The copied Command 01 executed successfully in an isolated native runtime with only Raycast-provided modules, no project dependencies or source tree.
+- Raycast classifies local imports as development extensions. Removing the badge is not a claimed outcome. No continuously running builder is needed for the slot workflow.
+- Package integrity checks verify executable coverage, slot count, profile sanitization and exclusion of private generated commands. Full desktop import and OS hotkeys remain unverified because computer-use initialization failed.
+- Dependency audit: 8 unresolved findings (2 low, 2 moderate, 4 high). The optional encoding dependency was added explicitly so the standalone bundle can include it; the existing dependency versions were retained.
