@@ -6,7 +6,7 @@ Reusable AI commands for Raycast on Windows, using your own model-provider conne
 
 Create prompts with **Create AI Command**, or edit them in **Commands**. Choose an icon, input source, provider/model settings, and whether to keep the original input available. New commands follow the shared default provider and model unless customized.
 
-This personal local fork generates a native command entry when a prompt is saved. Keep `npm run dev` running so new entries and their command-specific preferences are imported into Raycast. Configure enabled state, aliases and hotkeys in Raycast's extension settings. The separate Settings hub and script-folder setup are no longer the primary workflow.
+Assign a prompt to one of 20 predefined **Hotkey Slots**, then enable that slot and configure its alias, hotkey and overrides in Raycast Settings. Packaged installations need no running development builder. Native names are fixed (Command 01–20); prompt names and icons remain customizable inside Commands. See [INSTALL.md](INSTALL.md) for instructions.
 
 ## Models & Providers
 

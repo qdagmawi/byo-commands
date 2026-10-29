@@ -1,11 +1,11 @@
-# Release notes — 0.1.0-preview.1
+# Release notes — 0.2.0-preview.1
 
-- Custom commands with provider/model inheritance and per-command overrides.
-- Gemini, OpenAI and compatible/local provider profiles with model discovery and manual IDs.
-- Native entries generated for new commands in local source mode.
-- Expandable native command preferences, aliases, enabled state and hotkeys.
-- Clean native result views, copy/paste actions and continuation into chat.
-- Provider-neutral settings and chat presets; shared defaults for image requests.
-- Portable source launcher; no fixed user-directory paths in distributed code.
+- 20 predefined native slots replace source/manifest regeneration during command saves.
+- Assign, release or reassign slots in the prompt editor without a development builder.
+- Each slot has native enabled state, aliases, hotkeys and preferences. Native names/icons are fixed.
+- Existing prompts are preserved and start unassigned. Duplicate prompts do not inherit slots.
+- Gemini, OpenAI and compatible/local provider profiles, model discovery, manual IDs and inheritance remain available.
+- Specific provider selection stays in the prompt editor; static native preferences offer saved/default providers.
+- Clean result views, copy/paste and continuation into chat remain available.
 
-Known limitations: direct-install snapshots do not dynamically add native entries without the local source builder. A persistent bottom-of-window composer is not exposed by the extension Detail API and is not implemented. Native Anthropic Messages transport is not implemented. No auto-start service is installed. This preview is not a claim of full native Raycast AI parity.
+Limitations: 20 slots; extra prompts run from Commands. Native slot names/icons do not follow prompt names/icons. Native overrides persist through reassignment. A persistent bottom composer and native Anthropic Messages transport are not implemented. No startup service is needed. This is not full native Raycast AI parity. Package import, badge changes and actual OS hotkeys still need desktop acceptance testing.

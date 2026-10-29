@@ -1,3 +1,5 @@
+> Version 0.2 note: predefined hotkey slots supersede the historical native-generation/development-builder workflow described below. See INSTALL.md and command-slots tests for current behavior.
+
 # Implementation audit — 29 October 2026
 
 ## Sources checked

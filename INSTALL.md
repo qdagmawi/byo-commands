@@ -1,24 +1,37 @@
-# Commands 0.1.0-preview.1 — Windows
+# Install Commands — Windows
 
-## Which package to use
+## Install the packaged extension
 
-**Source ZIP — recommended for the full local workflow.** Extract it to a permanent folder and double-click Start-AI-Commands.cmd. Node.js 22.22.2+ and npm are required. The launcher installs locked dependencies on first use and starts the local Raycast builder in the background. Logs are stored in .runtime beside the launcher. The process-only PowerShell policy flag in the CMD launcher does not change the computer's execution-policy setting.
+1. Keep Raycast installed and running.
+2. Stop any existing Commands development builder. If it is running in a terminal, press Ctrl+C there. Do not restart the old Start-AI-Commands launcher for normal use.
+3. Open commands-0.2.0-preview.1.rayext with Raycast and follow its import prompt. If Windows asks which app to use, choose Raycast. Import behavior depends on the installed Raycast version.
+4. Search for **Commands** in Raycast. Existing provider keys and prompts use the same extension ID; this update does not intentionally delete them.
+5. Open **Models & Providers**, add your API key if needed, and select the default provider and model.
 
-Keeping that builder running allows new saved prompts to become native command entries with enabled state, aliases, hotkeys, and expandable per-command settings. Restart the launcher after signing back into Windows; this preview does not install a startup task or service. Paths are configured automatically for the folder you extract to.
+The packaged slot workflow needs no Node installation, development builder, startup task, script directory or Quicklink.
 
-**.rayext — direct-install snapshot.** Open it with Raycast, or use Raycast's extension import UI. It contains compiled code, icons, the three built-in commands, and command/provider management. No Node.js installation is needed just to run that snapshot. Saved custom prompts remain runnable inside Commands, but automatically adding their own native Settings entries requires the source package and its running builder. Installing the snapshot alone does not include a background compiler.
+## Give a prompt a global hotkey
 
-## Set up AI
+1. Open **Commands**, select a prompt and choose **Edit AI Command**.
+2. Set **Hotkey Slot** to an available entry, such as **Command 01**, then save.
+3. Open **Raycast Settings → Extensions → Commands**.
+4. Find **Command 01**, enable it, and assign its native hotkey or alias. Slots are disabled by default to keep main search uncluttered.
+5. Select text in another application and press the hotkey. The slot runs its assigned prompt using the prompt's input and model settings.
 
-1. Open Models & Providers.
-2. Add your own Gemini, OpenAI, or compatible/local connection.
-3. Select a default model.
-4. Create a command or use the built-in writing commands.
+Alternatively, enable and launch an empty slot to choose a saved prompt. Assignment itself does not send an AI request; launch the slot again to run it.
 
-No credentials, personal command definitions, chat history or provider profiles are included. Installing on a new machine starts with clean extension storage. Existing extension data is managed by Raycast; this package does not import or delete it.
+## Change a slot later
 
-## Scope
+Edit its current prompt and select **None — Run from Commands** to free the slot. Assign it to another prompt. The slot's native identifier and hotkey do not change when the prompt is renamed, edited or replaced.
 
-This is a personal Windows preview, not a Raycast Store publication. The built-in Raycast AI settings page is a separate feature. Extension commands appear under this extension's own native settings. Real OS hotkey activation and foreground-selection behavior still depend on Raycast and the active application. See RELEASE-NOTES.md and VALIDATION.md for limitations and checks.
+Deleting a prompt frees its slot. Duplicating a prompt leaves the duplicate unassigned. Resetting a built-in prompt or deleting all prompts also clears their slot assignments. Extra prompts remain available inside Commands after all 20 slots are occupied.
 
-To use the source version from a terminal, run npm ci followed by npm run dev. The pinned SDK is kept for compatibility; the .rayext is packaged separately using the current official bundle tool.
+Native entries retain fixed names **Command 01** through **Command 20** and a common icon. Each prompt keeps its own name and icon inside Commands. Use Raycast aliases to find slots more easily. Slot-level provider/model/prompt/input overrides stay attached to the slot when reassigned; clear them to follow the assigned prompt. Configure specific provider profiles in the prompt editor; the static native provider preference offers saved/default choices.
+
+## Development and troubleshooting
+
+The source ZIP is for modifying the extension: extract it, run npm ci, then npm run dev. This intentionally imports a development version and can show the Development badge. Existing Start-AI-Commands launchers are development tools, not the normal installation path.
+
+If the badge remains after importing the package, verify that the builder is stopped and check whether Raycast still has the development registration active. Do not uninstall or clear extension data just to remove a badge. Native Windows import, badge transitions and actual OS hotkeys still need desktop acceptance testing; automated tests validate slot routing and persistence.
+
+This is a personal preview. No credentials or personal prompt definitions are included in the package.
