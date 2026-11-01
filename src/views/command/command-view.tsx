@@ -7,17 +7,21 @@ import {
   Icon,
   Keyboard,
   LaunchProps,
-  List,
   Navigation,
-  open,
   useNavigation,
 } from "@raycast/api";
 import { useChat } from "../../hooks/useChat";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { canAccessBrowserExtension } from "../../utils/browser";
-import { PrimaryAction } from "../../actions";
 import { Command, ChatHook, Model } from "../../type";
-import { fetchContent } from "../../utils/cmd-input";
+import { fetchContent, fetchBrowserPage } from "../../utils/cmd-input";
+import {
+  inspectPromptTemplate,
+  renderPromptTemplate,
+  TEMPLATE_SYSTEM_PROMPT,
+  type PromptContext,
+} from "../../utils/prompt-template";
+import CommandInputForm from "./input-form";
 import Ask from "../../ask";
 import { v4 as uuidv4 } from "uuid";
 import { useCommand } from "../../hooks/useCommand";
@@ -37,6 +41,12 @@ export default function CommandView(props: CommandLaunchProps) {
   const [userInputError, setUserInputError] = useState<string | null>(null);
   const [isReadingInput, setReadingInput] = useState(true);
   const [frontmostApp, setFrontmostApp] = useState<Application | null>(null);
+  const [inputContext, setInputContext] = useState<PromptContext>({});
+  const [argumentValues, setArgumentValues] = useState<Record<string, string> | null>(null);
+  const [argumentNames, setArgumentNames] = useState<string[]>([]);
+  const [manualWebpage, setManualWebpage] = useState(false);
+  const [executionModel, setExecutionModel] = useState<Model>();
+  const started = useRef(false);
 
   const requestedCommandId = props.launchContext?.commandId || "";
   const [request, setRequest] = useState<{ command: Command; model: Model }>();
@@ -76,15 +86,39 @@ export default function CommandView(props: CommandLaunchProps) {
 
   useEffect(() => {
     (async () => {
-      if (!requestedCommand) {
+      if (!requestedCommand || !requestedModel) {
         return;
       }
       setReadingInput(true);
       try {
-        const { content, error } = await fetchContent(requestedCommand.contentSource);
+        const info = inspectPromptTemplate(requestedModel.prompt);
+        setArgumentNames(info.argumentNames);
+        let page: PromptContext["browser"];
+        let needsPageInput = false;
+        if (requestedCommand.contentSource === "browserTab" || info.usesBrowser) {
+          if (canAccessBrowserExtension()) {
+            try {
+              page = await fetchBrowserPage();
+            } catch {
+              needsPageInput = true;
+            }
+          } else needsPageInput = true;
+        }
+        const { content, error } =
+          requestedCommand.contentSource === "browserTab"
+            ? { content: page?.content ?? null, error: null }
+            : await fetchContent(requestedCommand.contentSource);
+        const selection =
+          info.usesSelection && requestedCommand.contentSource !== "selectedText"
+            ? await fetchContent("selectedText")
+            : { content, error };
+        setInputContext({ selection: selection.content ?? undefined, browser: page });
+        setManualWebpage(needsPageInput);
         setUserInput(content);
         setUserInputError(
-          error || (!content ? "No input available. Select text or choose another input source." : null),
+          error ||
+            (info.usesSelection ? selection.error : null) ||
+            (!content && !needsPageInput ? "No input available. Select text or choose another input source." : null),
         );
       } catch (error) {
         setUserInputError(error instanceof Error ? error.message : String(error));
@@ -95,11 +129,41 @@ export default function CommandView(props: CommandLaunchProps) {
   }, [requestedCommand]);
 
   useEffect(() => {
-    if (userInput && requestedCommand && requestedModel) {
-      setAiAnswer(null);
-      chat.ask(userInput, [], requestedModel);
+    if (
+      userInput &&
+      requestedCommand &&
+      requestedModel &&
+      !isReadingInput &&
+      !manualWebpage &&
+      !userInputError &&
+      !started.current &&
+      (argumentNames.length === 0 || argumentValues)
+    ) {
+      try {
+        const info = inspectPromptTemplate(requestedModel.prompt);
+        const model = info.hasTokens ? { ...requestedModel, prompt: TEMPLATE_SYSTEM_PROMPT } : requestedModel;
+        const question = info.hasTokens
+          ? renderPromptTemplate(requestedModel.prompt, { ...inputContext, arguments: argumentValues ?? {} })
+          : userInput;
+        started.current = true;
+        setExecutionModel(model);
+        setAiAnswer(null);
+        void chat.ask(question, [], model);
+      } catch (error) {
+        setUserInputError(error instanceof Error ? error.message : String(error));
+      }
     }
-  }, [userInput, requestedCommand]);
+  }, [
+    userInput,
+    requestedCommand,
+    requestedModel,
+    isReadingInput,
+    manualWebpage,
+    userInputError,
+    argumentNames,
+    argumentValues,
+    inputContext,
+  ]);
 
   useEffect(() => {
     if (!chat.streamData && !chat.isLoading && chat.data.length > 0) {
@@ -116,8 +180,22 @@ export default function CommandView(props: CommandLaunchProps) {
   if (!requestedCommand || !requestedModel) {
     return <Detail isLoading markdown="" />;
   }
-  if (requestedCommand.contentSource === "browserTab" && !canAccessBrowserExtension()) {
-    return BROWSER_EXTENSION_NOT_AVAILABLE_VIEW;
+  if (!isReadingInput && !userInputError && (manualWebpage || (argumentNames.length > 0 && !argumentValues))) {
+    return (
+      <CommandInputForm
+        title={requestedCommand.name}
+        argumentNames={argumentNames}
+        manualWebpage={manualWebpage}
+        onSubmit={(values) => {
+          setArgumentValues(values.arguments);
+          if (values.browser) {
+            setInputContext((context) => ({ ...context, browser: values.browser }));
+            if (requestedCommand.contentSource === "browserTab") setUserInput(values.browser.content);
+          }
+          setManualWebpage(false);
+        }}
+      />
+    );
   }
 
   const viewBuilder = new CommandViewBuilder(
@@ -128,7 +206,7 @@ export default function CommandView(props: CommandLaunchProps) {
     userInput,
     aiAnswer,
     userInputError || chat.errorMsg,
-    requestedModel,
+    executionModel ?? requestedModel,
   );
 
   return (
@@ -273,19 +351,3 @@ function buildCommandNotFoundView(commandId: string) {
     />
   );
 }
-
-const BROWSER_EXTENSION_NOT_AVAILABLE_VIEW = (
-  <List
-    actions={
-      <ActionPanel>
-        <PrimaryAction title="Install" onAction={() => open("https://www.raycast.com/browser-extension")} />
-      </ActionPanel>
-    }
-  >
-    <List.EmptyView
-      icon={Icon.BoltDisabled}
-      title={"Browser Extension Required"}
-      description={"This command need install Raycast browser extension to work. Please install it first"}
-    />
-  </List>
-);

@@ -1,5 +1,15 @@
 import { BrowserExtension, Clipboard, getSelectedText } from "@raycast/api";
 import { getErrorMessage } from "./error";
+import type { BrowserPage } from "./prompt-template";
+
+export async function fetchBrowserPage(): Promise<BrowserPage> {
+  const tabs = (await BrowserExtension.getTabs()).filter((tab) => tab.active);
+  if (tabs.length !== 1)
+    throw new Error("Could not identify a single active browser tab. Paste the webpage content below.");
+  const tab = tabs[0];
+  const content = await BrowserExtension.getContent({ format: "markdown", tabId: tab.id });
+  return { title: tab.title ?? "", url: tab.url, content };
+}
 
 export async function fetchContent(source: "clipboard" | "selectedText" | "browserTab") {
   let content: string | null = null;
