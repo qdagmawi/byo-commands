@@ -10,6 +10,9 @@ const native = {
     : "Raycast desktop JavaScript runtime is not installed; set RAYCAST_API_ROOT to run native integration checks",
   timeout: 20000,
 };
+const compiledOptions = (entry, options = {}) => process.env.RAYCAST_PREBUILT_DIR
+  ? { ...options, compiledPath: require('node:path').join(process.env.RAYCAST_PREBUILT_DIR, entry + '.js') }
+  : options;
 const writer = {
   ...DEFAULT_MODEL,
   id: "writer",
@@ -36,6 +39,37 @@ const inheritedCommand = {
   isDisplayInput: true,
 };
 const commandFixture = { ...fixture, commands: JSON.stringify({ rewrite: inheritedCommand }) };
+
+test('simple explanations render selected text once and keep resolved instructions when continuing chat', native, async(t)=>{
+  const api=await provider(t);const app=await launch('explain-simple',{},api.prefs,compiledOptions('explain-simple'));t.after(app.close);
+  await app.waitFor(tree=>body(tree).kind==='Detail'&&body(tree).markdown==='Fixture answer'&&!body(tree).isLoading);
+  assert.ok(!api.requests[0].messages.some(message=>message.content.includes('{selection}')));
+  assert.equal(api.requests[0].messages[1].content.split('Text to rewrite').length,2);
+  assert.ok(api.requests[0].messages[1].content.includes('Act as a dictionary and encyclopedia'));
+  await action(app,'Continue in Chat');await app.waitFor(page('Ask'));
+});
+
+test('webpage questions ask for arguments and pasted content before sending on Windows', native, async(t)=>{
+ const api=await provider(t);const app=await launch('ask-about-webpage',{},api.prefs,compiledOptions('ask-about-webpage'));t.after(app.close);
+ await app.waitFor(page('Ask About Webpage'));
+ assert.equal(body(app.tree).kind,'Form');assert.equal(api.requests.length,0);
+ await submit(app,'Run Command');
+ await app.waitFor(tree=>field(tree,'argument-0')?.error==='Enter Question.'&&field(tree,'pageContent')?.error==='Paste the webpage content.');
+ await change(app,'argument-0','What is the key idea?');await change(app,'pageTitle','Example Article');await change(app,'pageUrl','https://example.com/article');await change(app,'pageContent','A useful factual passage.');
+ await submit(app,'Run Command');
+ await app.waitFor(tree=>body(tree).kind==='Detail'&&body(tree).markdown==='Fixture answer'&&!body(tree).isLoading);
+ const question=api.requests[0].messages[1].content;
+ for(const text of ['What is the key idea?','Example Article','https://example.com/article','A useful factual passage.'])assert.ok(question.includes(text));
+ assert.ok(!question.includes('{browser-tab'));assert.ok(!question.includes('{argument name='));assert.equal(api.requests.length,1);
+});
+
+test('webpage summaries use the captured tab metadata and markdown when the browser API is available', native, async(t)=>{
+ const api=await provider(t);const app=await launch('summarize-webpage',{},api.prefs,compiledOptions('summarize-webpage',{browserExtension:true}));t.after(app.close);
+ await app.waitFor(tree=>body(tree).kind==='Detail'&&body(tree).markdown==='Fixture answer'&&!body(tree).isLoading);
+ const question=api.requests[0].messages[1].content;
+ for(const text of ['Fixture page','https://example.com/','Fixture page content','### Key Takeaways'])assert.ok(question.includes(text));
+ assert.ok(!question.includes('{browser-tab'));
+});
 
 test('assigned slot executes its saved prompt and native overrides without a development builder', native, async (t) => {
   const api = await provider(t);
@@ -1301,7 +1335,7 @@ test('two native hotkey setup views complete without racing icons and generate W
   }
   const folder=path.join(support,'command-launchers');
   const scripts=(await fs.readdir(folder)).filter(f=>f.endsWith('.ps1'));
-  assert.equal(scripts.length,3);
+  assert.equal(scripts.length,Object.keys(require('../src/utils/model-defaults.ts').DEFAULT_COMMANDS).length);
   for(const name of scripts){
     const script=await fs.readFile(path.join(folder,name),'utf8');
     assert.match(script,/# @raycast.platform windows/);

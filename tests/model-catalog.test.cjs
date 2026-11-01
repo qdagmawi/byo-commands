@@ -93,7 +93,7 @@ test("legacy array models and commands migrate without changing their effective 
 
 test("old built-ins and user commands migrate independently without adding or leaving behind presets", async () => {
   const oldCommands = Object.fromEntries(
-    Object.entries(DEFAULT_COMMANDS).map(([id, cmd]) => [id, { ...cmd, configurationMode: undefined }]),
+    Object.entries(DEFAULT_COMMANDS).filter(([id]) => ["default-fix-spelling-and-grammar", "default-improve-writing", "default-summarize-webpage"].includes(id)).map(([id, cmd]) => [id, { ...cmd, configurationMode: undefined, baseModelId: undefined }]),
   );
   const firstId = Object.keys(oldCommands)[0];
   oldCommands[firstId] = { ...oldCommands[firstId], model: "custom-builtin", temperature: "0", prompt: "" };
@@ -180,8 +180,8 @@ test("fresh installs and resetting built-in commands never create additional cha
   assert.deepEqual(Object.keys(store.getSnapshot().catalog.models).sort(), ["default", "writer"]);
   assert.deepEqual(Object.keys(store.getSnapshot().catalog.commands).sort(), Object.keys(DEFAULT_COMMANDS).sort());
   for (const cmd of Object.values(store.getSnapshot().catalog.commands)) {
-    assert.equal(cmd.configurationMode, "independent");
-    assert.equal(cmd.baseModelId, undefined);
+    assert.equal(cmd.configurationMode, DEFAULT_COMMANDS[cmd.id].configurationMode);
+    assert.equal(cmd.baseModelId, DEFAULT_COMMANDS[cmd.id].baseModelId);
   }
 });
 
