@@ -58,7 +58,7 @@ try {
     $outputStream = $target.Open()
     try { $inputStream.CopyTo($outputStream) } finally { $inputStream.Dispose(); $outputStream.Dispose() }
   }
-  foreach ($name in @('INSTALL.md','RELEASE-NOTES.md','VALIDATION.md','LICENSE','THIRD-PARTY-NOTICES.txt')) {
+  foreach ($name in @('INSTALL.md','RELEASE-NOTES.md','VALIDATION.md','PROMPT-TEMPLATES.md','LICENSE','THIRD-PARTY-NOTICES.txt')) {
     [IO.Compression.ZipFileExtensions]::CreateEntryFromFile($installZip, (Join-Path $stage $name), ('Commands/' + $name), [IO.Compression.CompressionLevel]::Optimal) | Out-Null
   }
 } finally { $archive.Dispose(); $installZip.Dispose() }
@@ -76,7 +76,7 @@ try {
     [IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $_.FullName, $relative, [IO.Compression.CompressionLevel]::Optimal) | Out-Null
   }
 } finally { $zip.Dispose() }
-foreach ($name in @('INSTALL.md','RELEASE-NOTES.md','VALIDATION.md')) {
+foreach ($name in @('INSTALL.md','RELEASE-NOTES.md','VALIDATION.md','PROMPT-TEMPLATES.md')) {
   $file = Join-Path $stage $name
   if (Test-Path -LiteralPath $file) { Copy-Item -LiteralPath $file -Destination $release }
 }

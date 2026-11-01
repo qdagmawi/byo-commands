@@ -1,13 +1,11 @@
-# Release notes — 0.2.1-preview.1
+# Release notes — 0.3.0-preview.1
 
-- Automatically assign the first free slot on save; full capacity saves the prompt without displacing existing assignments.
-- Replace unsupported public Windows .rayext installation with a prebuilt directory ZIP. The local Development badge may remain; no builder is required.
-- 20 predefined native slots replace source/manifest regeneration during command saves.
-- Assign, release or reassign slots in the prompt editor without a development builder.
-- Each slot has native enabled state, aliases, hotkeys and preferences. Native names/icons are fixed.
-- Existing prompts are preserved and start unassigned. Duplicate prompts do not inherit slots.
-- Gemini, OpenAI and compatible/local provider profiles, model discovery, manual IDs and inheritance remain available.
-- Specific provider selection stays in the prompt editor; static native preferences offer saved/default providers.
-- Clean result views, copy/paste and continuation into chat remain available.
+- Add Explainer, Rewriter, Explain This in Simple Terms, Ask About Webpage, Critique & Counterarguments and Synthesize & Connect as defaults with named native entries.
+- Replace the unchanged stock Summarize Webpage prompt with the supplied structured summary. Preserve user-edited prompts and provider/model choices.
+- New supplied defaults inherit the current default provider/model and use original icons on a shared teal tile.
+- Resolve selected text, named question arguments and webpage title/URL/Markdown placeholders before sending. Insert values once, without recursive template interpretation.
+- Ask for a question when required. Browser capture uses one identified active tab; unavailable or ambiguous capture offers a manual page-content form. Windows currently needs this fallback.
+- Keep 20 optional slots for custom prompts, with automatic first-free-slot assignment.
+- Distribute a prebuilt Windows folder ZIP. No running builder is required. Local imports may still carry Raycast's Development badge.
 
-Limitations: 20 slots; extra prompts run from Commands. Native slot names/icons do not follow prompt names/icons. Native overrides persist through reassignment. A persistent bottom composer and native Anthropic Messages transport are not implemented. No startup service is needed. This is not full native Raycast AI parity. Package import, badge changes and actual OS hotkeys still need desktop acceptance testing.
+No full Raycast Dynamic Placeholders engine is claimed; supported syntax is documented in PROMPT-TEMPLATES.md. Real browser capture on Windows is not claimed. Native OS hotkeys and full desktop import remain acceptance checks.

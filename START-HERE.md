@@ -2,6 +2,8 @@
 
 Follow [INSTALL.md](INSTALL.md) for Windows installation and native hotkey setup.
 
+Version 0.3 includes the seven supplied explanation, rewriting, webpage, critique and synthesis prompts as named defaults with matching icons. These use the default provider/model and do not consume custom slots. See [PROMPT-TEMPLATES.md](PROMPT-TEMPLATES.md) for supported placeholders and the Windows webpage-content fallback.
+
 Version 0.2 replaces runtime generation of native entries with 20 predefined optional slots. New custom prompts and duplicates automatically take the first free **Hotkey Slot**, then enable that entry and set its alias/hotkey in Raycast Settings. Runtime edits and slot assignments use extension storage and need no compiler or running development builder.
 
 The three built-in writing commands keep their original native entries. Existing saved prompts, provider profiles, keys and chat data retain their storage identifiers. Legacy generated source entries and script helpers remain in the local source for compatibility; new saves no longer generate them.

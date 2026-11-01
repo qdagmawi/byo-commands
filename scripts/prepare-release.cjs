@@ -4,13 +4,13 @@ if(fs.existsSync(output))throw Error('Choose a new staging directory; nothing wi
 fs.mkdirSync(output,{recursive:true});
 const directories=['src','scripts','tests'];
 for(const dir of directories)fs.cpSync(path.join(root,dir),path.join(output,dir),{recursive:true,filter:(file)=>!/^custom-ai-.*\.tsx$/.test(path.basename(file))});
-for(const file of ['package.json','package-lock.json','tsconfig.json','eslint.config.js','.prettierrc','.gitignore','.gitattributes','LICENSE','README.md','INSTALL.md','RELEASE-NOTES.md','VALIDATION.md','Start-AI-Commands.cmd','Start-AI-Commands.ps1'])fs.copyFileSync(path.join(root,file),path.join(output,file));
+for(const file of ['package.json','package-lock.json','tsconfig.json','eslint.config.js','.prettierrc','.gitignore','.gitattributes','LICENSE','README.md','INSTALL.md','RELEASE-NOTES.md','VALIDATION.md','PROMPT-TEMPLATES.md','Start-AI-Commands.cmd','Start-AI-Commands.ps1'])fs.copyFileSync(path.join(root,file),path.join(output,file));
 fs.mkdirSync(path.join(output,'assets','command-icons'),{recursive:true});
 for(const file of fs.readdirSync(path.join(root,'assets','command-icons')))if(/\.(png|svg)$/.test(file)||file==='NOTICE.txt')fs.copyFileSync(path.join(root,'assets','command-icons',file),path.join(output,'assets','command-icons',file));
 fs.copyFileSync(path.join(root,'assets','icon-teal.png'),path.join(output,'assets','icon-teal.png'));
 const manifest=JSON.parse(fs.readFileSync(path.join(output,'package.json'),'utf8'));
 manifest.commands=manifest.commands.filter(c=>!c.name.startsWith('custom-ai-'));
-const builtins={'fix-spelling-and-grammar':['Fix Spelling and Grammar','checkmark'],'improve-writing':['Improve Writing','pencil'],'summarize-webpage':['Summarize Webpage','text']};
+const builtins={'fix-spelling-and-grammar':['Fix Spelling and Grammar','checkmark'],'improve-writing':['Improve Writing','pencil'],'summarize-webpage':['Summarize Webpage','globe']};
 for(const c of manifest.commands){
  if(builtins[c.name]){c.title=builtins[c.name][0];c.icon='command-icons/'+builtins[c.name][1]+'.png';}
  for(const pref of c.preferences||[])if(pref.name==='aiProviderOverride')pref.data=pref.data.filter(x=>x.value==='saved'||x.value==='default');

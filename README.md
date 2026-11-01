@@ -2,6 +2,20 @@
 
 Reusable AI commands for Raycast on Windows, using your own model-provider connections.
 
+## Included defaults
+
+- Explainer — detailed, rigorous explanation.
+- Rewriter — validation, paraphrases and creative alternatives.
+- Explain This in Simple Terms — concise definitions and explanations.
+- Ask About Webpage — a question about supplied page content.
+- Summarize Webpage — concise summary and key takeaways.
+- Critique & Counterarguments — assumptions, reasoning gaps and opposing views.
+- Synthesize & Connect — broader concepts and connections.
+
+Each has a suitable icon and a named native command. They inherit your default provider/model and do not consume custom slots. Fix Spelling and Grammar and Improve Writing remain available. Your edited prompts are preserved on upgrade.
+
+The supplied selection, question and browser placeholders are supported. Windows webpage commands offer pasted content when the browser API is unavailable. See [PROMPT-TEMPLATES.md](PROMPT-TEMPLATES.md).
+
 ## Commands first
 
 Create prompts with **Create AI Command**, or edit them in **Commands**. Choose an icon, input source, provider/model settings, and whether to keep the original input available. New commands follow the shared default provider and model unless customized.
