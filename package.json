@@ -201,7 +201,7 @@
       "description": "Run this saved AI command. Expand its settings for command-specific overrides.",
       "mode": "view",
       "subtitle": "Commands",
-      "icon": "command-icons/action.png",
+      "icon": "command-icons/globe.png",
       "preferences": [
         {
           "name": "aiProviderOverride",
@@ -1904,6 +1904,456 @@
           ]
         }
       ]
+    },
+    {
+      "name": "explainer",
+      "title": "Explainer",
+      "description": "Run the built-in Explainer prompt using your default provider and model.",
+      "subtitle": "Commands",
+      "icon": "command-icons/search.png",
+      "mode": "view",
+      "preferences": [
+        {
+          "name": "aiProviderOverride",
+          "title": "Provider",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "description": "Use this command's saved provider or override it here. Choose a matching model ID when changing providers.",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Default Provider",
+              "value": "default"
+            }
+          ]
+        },
+        {
+          "name": "aiPromptOverride",
+          "title": "Prompt Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to use the prompt saved in Edit AI Command."
+        },
+        {
+          "name": "aiModelOverride",
+          "title": "Model ID Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to follow this command's saved model configuration."
+        },
+        {
+          "name": "aiTemperatureOverride",
+          "title": "Temperature Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Optional number from 0 to 2. Leave blank to use the saved setting."
+        },
+        {
+          "name": "aiSourceOverride",
+          "title": "Input Source",
+          "description": "Follow the saved input source or override it for this command.",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Selected Text",
+              "value": "selectedText"
+            },
+            {
+              "title": "Clipboard",
+              "value": "clipboard"
+            },
+            {
+              "title": "Browser Tab",
+              "value": "browserTab"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rewriter",
+      "title": "Rewriter",
+      "description": "Run the built-in Rewriter prompt using your default provider and model.",
+      "subtitle": "Commands",
+      "icon": "command-icons/pencil.png",
+      "mode": "view",
+      "preferences": [
+        {
+          "name": "aiProviderOverride",
+          "title": "Provider",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "description": "Use this command's saved provider or override it here. Choose a matching model ID when changing providers.",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Default Provider",
+              "value": "default"
+            }
+          ]
+        },
+        {
+          "name": "aiPromptOverride",
+          "title": "Prompt Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to use the prompt saved in Edit AI Command."
+        },
+        {
+          "name": "aiModelOverride",
+          "title": "Model ID Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to follow this command's saved model configuration."
+        },
+        {
+          "name": "aiTemperatureOverride",
+          "title": "Temperature Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Optional number from 0 to 2. Leave blank to use the saved setting."
+        },
+        {
+          "name": "aiSourceOverride",
+          "title": "Input Source",
+          "description": "Follow the saved input source or override it for this command.",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Selected Text",
+              "value": "selectedText"
+            },
+            {
+              "title": "Clipboard",
+              "value": "clipboard"
+            },
+            {
+              "title": "Browser Tab",
+              "value": "browserTab"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "explain-simple",
+      "title": "Explain This in Simple Terms",
+      "description": "Run the built-in Explain This in Simple Terms prompt using your default provider and model.",
+      "subtitle": "Commands",
+      "icon": "command-icons/book.png",
+      "mode": "view",
+      "preferences": [
+        {
+          "name": "aiProviderOverride",
+          "title": "Provider",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "description": "Use this command's saved provider or override it here. Choose a matching model ID when changing providers.",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Default Provider",
+              "value": "default"
+            }
+          ]
+        },
+        {
+          "name": "aiPromptOverride",
+          "title": "Prompt Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to use the prompt saved in Edit AI Command."
+        },
+        {
+          "name": "aiModelOverride",
+          "title": "Model ID Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to follow this command's saved model configuration."
+        },
+        {
+          "name": "aiTemperatureOverride",
+          "title": "Temperature Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Optional number from 0 to 2. Leave blank to use the saved setting."
+        },
+        {
+          "name": "aiSourceOverride",
+          "title": "Input Source",
+          "description": "Follow the saved input source or override it for this command.",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Selected Text",
+              "value": "selectedText"
+            },
+            {
+              "title": "Clipboard",
+              "value": "clipboard"
+            },
+            {
+              "title": "Browser Tab",
+              "value": "browserTab"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ask-about-webpage",
+      "title": "Ask About Webpage",
+      "description": "Run the built-in Ask About Webpage prompt using your default provider and model.",
+      "subtitle": "Commands",
+      "icon": "command-icons/globe.png",
+      "mode": "view",
+      "preferences": [
+        {
+          "name": "aiProviderOverride",
+          "title": "Provider",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "description": "Use this command's saved provider or override it here. Choose a matching model ID when changing providers.",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Default Provider",
+              "value": "default"
+            }
+          ]
+        },
+        {
+          "name": "aiPromptOverride",
+          "title": "Prompt Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to use the prompt saved in Edit AI Command."
+        },
+        {
+          "name": "aiModelOverride",
+          "title": "Model ID Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to follow this command's saved model configuration."
+        },
+        {
+          "name": "aiTemperatureOverride",
+          "title": "Temperature Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Optional number from 0 to 2. Leave blank to use the saved setting."
+        },
+        {
+          "name": "aiSourceOverride",
+          "title": "Input Source",
+          "description": "Follow the saved input source or override it for this command.",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Selected Text",
+              "value": "selectedText"
+            },
+            {
+              "title": "Clipboard",
+              "value": "clipboard"
+            },
+            {
+              "title": "Browser Tab",
+              "value": "browserTab"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "critique-counterarguments",
+      "title": "Critique & Counterarguments",
+      "description": "Run the built-in Critique & Counterarguments prompt using your default provider and model.",
+      "subtitle": "Commands",
+      "icon": "command-icons/scales.png",
+      "mode": "view",
+      "preferences": [
+        {
+          "name": "aiProviderOverride",
+          "title": "Provider",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "description": "Use this command's saved provider or override it here. Choose a matching model ID when changing providers.",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Default Provider",
+              "value": "default"
+            }
+          ]
+        },
+        {
+          "name": "aiPromptOverride",
+          "title": "Prompt Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to use the prompt saved in Edit AI Command."
+        },
+        {
+          "name": "aiModelOverride",
+          "title": "Model ID Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to follow this command's saved model configuration."
+        },
+        {
+          "name": "aiTemperatureOverride",
+          "title": "Temperature Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Optional number from 0 to 2. Leave blank to use the saved setting."
+        },
+        {
+          "name": "aiSourceOverride",
+          "title": "Input Source",
+          "description": "Follow the saved input source or override it for this command.",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Selected Text",
+              "value": "selectedText"
+            },
+            {
+              "title": "Clipboard",
+              "value": "clipboard"
+            },
+            {
+              "title": "Browser Tab",
+              "value": "browserTab"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "synthesize-connect",
+      "title": "Synthesize & Connect",
+      "description": "Run the built-in Synthesize & Connect prompt using your default provider and model.",
+      "subtitle": "Commands",
+      "icon": "command-icons/connections.png",
+      "mode": "view",
+      "preferences": [
+        {
+          "name": "aiProviderOverride",
+          "title": "Provider",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "description": "Use this command's saved provider or override it here. Choose a matching model ID when changing providers.",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Default Provider",
+              "value": "default"
+            }
+          ]
+        },
+        {
+          "name": "aiPromptOverride",
+          "title": "Prompt Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to use the prompt saved in Edit AI Command."
+        },
+        {
+          "name": "aiModelOverride",
+          "title": "Model ID Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to follow this command's saved model configuration."
+        },
+        {
+          "name": "aiTemperatureOverride",
+          "title": "Temperature Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Optional number from 0 to 2. Leave blank to use the saved setting."
+        },
+        {
+          "name": "aiSourceOverride",
+          "title": "Input Source",
+          "description": "Follow the saved input source or override it for this command.",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Selected Text",
+              "value": "selectedText"
+            },
+            {
+              "title": "Clipboard",
+              "value": "clipboard"
+            },
+            {
+              "title": "Browser Tab",
+              "value": "browserTab"
+            }
+          ]
+        }
+      ]
     }
   ],
   "preferences": [
@@ -2063,7 +2513,7 @@
     "prebuild": "node scripts/configure-local.cjs",
     "predev": "node scripts/configure-local.cjs"
   },
-  "version": "0.2.1-preview.1",
+  "version": "0.3.0-preview.1",
   "private": true,
   "engines": {
     "node": ">=22.22.2"

@@ -11,6 +11,11 @@ export const commandIcons = [
   ["code-block", "Code Block"],
   ["star-circle", "Ideas"],
   ["text-cursor", "Editing"],
+  ["search", "Explainer"],
+  ["book", "Dictionary"],
+  ["globe", "Webpage"],
+  ["scales", "Critique"],
+  ["connections", "Connections"],
 ] as const;
 
 export function commandIconPath(icon?: string) {

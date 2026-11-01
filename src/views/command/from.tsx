@@ -212,7 +212,7 @@ function CommandFields(props: CommandFormProps & { models: Record<string, Model>
       <Form.Dropdown
         title="Icon"
         {...itemProps.icon}
-        info="Every command uses the same teal gradient background. Choose its Raycast symbol here."
+        info="Every command uses the same teal gradient background. Choose its symbol here."
       >
         {commandIcons.map(([id, title]) => (
           <Form.Dropdown.Item key={id} value={id} title={title} icon={commandIconPath(id)} />

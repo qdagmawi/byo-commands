@@ -67,7 +67,22 @@ export function migrateCatalog(
   for (const command of Object.values({ ...DEFAULT_COMMANDS, ...storedCommands })) {
     catalog = attachCommand(catalog, command, timestamp);
   }
-  return catalog;
+  return includeDefaultCommands(catalog);
+}
+
+export function includeDefaultCommands(catalog: Catalog): Catalog {
+  const commands = { ...DEFAULT_COMMANDS, ...catalog.commands };
+  for (const [id, defaults] of Object.entries(DEFAULT_COMMANDS)) {
+    commands[id] = { ...commands[id], icon: commands[id].icon ?? defaults.icon };
+  }
+  const summary = commands["default-summarize-webpage"];
+  if (
+    summary?.prompt ===
+    "Read and summarize the main ideas and key points from this text. Summarize the information concisely and clearly."
+  ) {
+    commands[summary.id] = { ...summary, prompt: DEFAULT_COMMANDS[summary.id].prompt, icon: summary.icon ?? "globe" };
+  }
+  return { ...catalog, commands };
 }
 
 export function mapCommandToModel(command: Command, models: Record<string, Model>): Model {
@@ -158,7 +173,8 @@ export function createModelCatalog(storage: Storage, now: () => Date = () => new
   const readLatest = async () => {
     const saved = await storage.getItem(CATALOG_STORAGE_KEY);
     if (saved) {
-      const next: Catalog = JSON.parse(saved);
+      const savedCatalog: Catalog = JSON.parse(saved);
+      const next = includeDefaultCommands(savedCatalog);
       if (next.version !== 1) throw new Error("Unsupported model configuration version.");
       const defaultModel = next.models.default;
       return defaultModel?.providerId ? selectDefaultModel(next, defaultModel.providerId, defaultModel.option) : next;

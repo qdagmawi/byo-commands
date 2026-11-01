@@ -1,4 +1,13 @@
 import type { Command, Model } from "../type";
+import {
+  EXPLAINER_PROMPT,
+  REWRITER_PROMPT,
+  SIMPLE_EXPLANATION_PROMPT,
+  ASK_WEBPAGE_PROMPT,
+  SUMMARIZE_WEBPAGE_PROMPT,
+  CRITIQUE_PROMPT,
+  SYNTHESIS_PROMPT,
+} from "./default-prompts";
 
 export const DEFAULT_MODEL: Model = {
   id: "default",
@@ -22,6 +31,7 @@ export const DEFAULT_COMMANDS: Record<string, Command> = {
   [FIX_SPELLING_AND_GRAMMAR_COMMAND_ID]: {
     id: FIX_SPELLING_AND_GRAMMAR_COMMAND_ID,
     name: "Fix Spelling and Grammar",
+    icon: "checkmark",
     configurationMode: "independent",
     prompt:
       "You are an assistant that fixes spelling, grammar and punctuation. Don't insert any " +
@@ -35,6 +45,7 @@ export const DEFAULT_COMMANDS: Record<string, Command> = {
   [IMPROVE_WRITING_COMMAND_ID]: {
     id: IMPROVE_WRITING_COMMAND_ID,
     name: "Improve Writing",
+    icon: "pencil",
     configurationMode: "independent",
     prompt: `Act as a spelling corrector, content writer, and text improver/editor. Reply with the rewritten text.
 After receiving corrections, the user can request clarifications, and you need to answer them in detail.
@@ -58,12 +69,39 @@ Strictly follow these rules:
   [`${DEFAULT_AI_COMMAND_ID_PREFIX}-summarize-webpage`]: {
     id: `${DEFAULT_AI_COMMAND_ID_PREFIX}-summarize-webpage`,
     name: "Summarize Webpage",
-    configurationMode: "independent",
-    prompt:
-      "Read and summarize the main ideas and key points from this text. Summarize the information concisely and clearly.",
+    icon: "globe",
+    configurationMode: "inherit",
+    baseModelId: "default",
+    overridePrompt: true,
+    prompt: SUMMARIZE_WEBPAGE_PROMPT,
     model: "gpt-5-nano",
     temperature: "1",
     contentSource: "browserTab",
     isDisplayInput: false,
   },
+  ...Object.fromEntries(
+    [
+      ["explainer", "Explainer", EXPLAINER_PROMPT, "search", "selectedText"],
+      ["rewriter", "Rewriter", REWRITER_PROMPT, "pencil", "selectedText"],
+      ["explain-simple", "Explain This in Simple Terms", SIMPLE_EXPLANATION_PROMPT, "book", "selectedText"],
+      ["ask-about-webpage", "Ask About Webpage", ASK_WEBPAGE_PROMPT, "globe", "browserTab"],
+      ["critique-counterarguments", "Critique & Counterarguments", CRITIQUE_PROMPT, "scales", "selectedText"],
+      ["synthesize-connect", "Synthesize & Connect", SYNTHESIS_PROMPT, "connections", "selectedText"],
+    ].map(([slug, name, prompt, icon, contentSource]) => {
+      const command: Command = {
+        id: `default-${slug}`,
+        name,
+        prompt,
+        icon,
+        configurationMode: "inherit",
+        baseModelId: "default",
+        overridePrompt: true,
+        model: DEFAULT_MODEL.option,
+        temperature: DEFAULT_MODEL.temperature,
+        contentSource: contentSource as Command["contentSource"],
+        isDisplayInput: contentSource === "selectedText",
+      };
+      return [command.id, command];
+    }),
+  ),
 };
