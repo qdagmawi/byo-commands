@@ -15,6 +15,7 @@ export function RunCommandAction({ command }: { command: Command }) {
       onAction={() =>
         push(
           <CommandView
+            key={`${command.id}-${Date.now()}`}
             arguments={{}}
             draftValues={{}}
             launchType={LaunchType.UserInitiated}

@@ -21,7 +21,8 @@ export async function syncNativeProject(
   return withDirectoryLock(root, ".native-commands.lock", async () => {
     const manifestPath = join(root, "package.json");
     const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
-    if (manifest.name !== "personal-ai-commands") throw new Error("This is not the personal Commands project.");
+    if (manifest.name !== "personal-ai-commands" && manifest.name !== "byo-commands")
+      throw new Error("This is not the personal Commands project.");
     const commands = Object.values(await readCommands());
     const owned = new Set(Object.values(nativeBuiltIns));
     const management = manifest.commands.filter(

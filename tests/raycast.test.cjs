@@ -1407,6 +1407,18 @@ test('command results show only the answer with native actions and separate orig
  await app.waitFor(tree=>body(tree).markdown==='Fixture answer');
 });
 
+test('command results offer Start Again and restart execution with new input',native,async(t)=>{
+ const api=await provider(t);
+ const app=await launch('fix-spelling-and-grammar',{},api.prefs);
+ t.after(app.close);
+ await app.waitFor(tree=>body(tree).kind==='Detail'&&body(tree).markdown==='Fixture answer'&&!body(tree).isLoading);
+ assert.equal(api.requests.length,1);
+ assert.ok(actions(app.tree).some(a=>a.title==='Start Again'));
+ await action(app,'Start Again');
+ await app.waitFor(()=>api.requests.length===2);
+ assert.equal(api.requests.length,2);
+});
+
 test('failed command results show the error without empty paste or copy actions',native,async(t)=>{
  const server=http.createServer((req,res)=>{res.statusCode=400;res.setHeader('Content-Type','application/json');res.end(JSON.stringify({error:{message:'Fixture request rejected'}}));});
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));

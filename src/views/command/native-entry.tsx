@@ -1,4 +1,5 @@
 import { Action, ActionPanel, Detail, getPreferenceValues, openCommandPreferences } from "@raycast/api";
+import { useMemo } from "react";
 import CommandView, { CommandLaunchProps } from "./command-view";
 
 export type NativeOverrides = {

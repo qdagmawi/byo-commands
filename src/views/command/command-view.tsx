@@ -11,7 +11,7 @@ import {
   useNavigation,
 } from "@raycast/api";
 import { useChat } from "../../hooks/useChat";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { canAccessBrowserExtension } from "../../utils/browser";
 import { Command, ChatHook, Model } from "../../type";
 import { fetchContent, fetchBrowserPage } from "../../utils/cmd-input";
@@ -45,10 +45,42 @@ export default function CommandView(props: CommandLaunchProps) {
   const [argumentValues, setArgumentValues] = useState<Record<string, string> | null>(null);
   const [argumentNames, setArgumentNames] = useState<string[]>([]);
   const [manualWebpage, setManualWebpage] = useState(false);
-  const [executionModel, setExecutionModel] = useState<Model>();
-  const started = useRef(false);
-
   const requestedCommandId = props.launchContext?.commandId || "";
+  const [executionModel, setExecutionModel] = useState<Model>();
+  const [executionCount, setExecutionCount] = useState(0);
+  const started = useRef(false);
+  const chatRef = useRef(chat);
+  chatRef.current = chat;
+
+  const rerun = useCallback(() => {
+    chatRef.current.abort();
+    void chatRef.current.clear();
+    started.current = false;
+    setAiAnswer(null);
+    setUserInput(null);
+    setUserInputError(null);
+    setArgumentValues(null);
+    setInputContext({});
+    setExecutionCount((c) => c + 1);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      chatRef.current.abort();
+      void chatRef.current.clear();
+      started.current = false;
+    };
+  }, []);
+
+  const lastCommandIdRef = useRef(requestedCommandId);
+  useEffect(() => {
+    if (lastCommandIdRef.current !== requestedCommandId) {
+      lastCommandIdRef.current = requestedCommandId;
+      setRequest(undefined);
+      rerun();
+    }
+  }, [requestedCommandId, rerun]);
+
   const [request, setRequest] = useState<{ command: Command; model: Model }>();
   const requestedCommand = request?.command;
   const requestedModel = request?.model;
@@ -85,6 +117,7 @@ export default function CommandView(props: CommandLaunchProps) {
   }, []);
 
   useEffect(() => {
+    let active = true;
     (async () => {
       if (!requestedCommand || !requestedModel) {
         return;
@@ -112,6 +145,7 @@ export default function CommandView(props: CommandLaunchProps) {
           info.usesSelection && requestedCommand.contentSource !== "selectedText"
             ? await fetchContent("selectedText")
             : { content, error };
+        if (!active) return;
         setInputContext({ selection: selection.content ?? undefined, browser: page });
         setManualWebpage(needsPageInput);
         setUserInput(content);
@@ -121,12 +155,18 @@ export default function CommandView(props: CommandLaunchProps) {
             (!content && !needsPageInput ? "No input available. Select text or choose another input source." : null),
         );
       } catch (error) {
+        if (!active) return;
         setUserInputError(error instanceof Error ? error.message : String(error));
       } finally {
-        setReadingInput(false);
+        if (active) {
+          setReadingInput(false);
+        }
       }
     })();
-  }, [requestedCommand]);
+    return () => {
+      active = false;
+    };
+  }, [requestedCommand, executionCount]);
 
   useEffect(() => {
     if (
@@ -163,6 +203,7 @@ export default function CommandView(props: CommandLaunchProps) {
     argumentNames,
     argumentValues,
     inputContext,
+    executionCount,
   ]);
 
   useEffect(() => {
@@ -207,6 +248,7 @@ export default function CommandView(props: CommandLaunchProps) {
     aiAnswer,
     userInputError || chat.errorMsg,
     executionModel ?? requestedModel,
+    rerun,
   );
 
   return (
@@ -228,6 +270,7 @@ class CommandViewBuilder {
   userInput: string | null;
   aiAnswer: string | null;
   error: string | null;
+  onRerun?: () => void;
 
   constructor(
     command: Command,
@@ -238,6 +281,7 @@ class CommandViewBuilder {
     aiAnswer: string | null,
     error: string | null,
     model: Model,
+    onRerun?: () => void,
   ) {
     this.command = command;
     this.model = model;
@@ -247,6 +291,7 @@ class CommandViewBuilder {
     this.userInput = userInput;
     this.aiAnswer = aiAnswer;
     this.error = error;
+    this.onRerun = onRerun;
   }
 
   buildContent(): string {
@@ -295,6 +340,15 @@ class CommandViewBuilder {
         shortcut={{ macOS: { modifiers: ["cmd"], key: "j" }, Windows: { modifiers: ["ctrl"], key: "j" } }}
       />
     );
+    const rerunAction = (
+      <Action
+        key="startAgain"
+        title="Start Again"
+        icon={Icon.RotateClockwise}
+        shortcut={Keyboard.Shortcut.Common.Refresh}
+        onAction={this.onRerun}
+      />
+    );
 
     const mainActions: React.JSX.Element[] = [];
     const extraActions: React.JSX.Element[] = [];
@@ -307,7 +361,12 @@ class CommandViewBuilder {
       } else {
         mainActions.push(copyToClipboard);
       }
+      if (this.onRerun) {
+        mainActions.push(rerunAction);
+      }
       extraActions.push(continueInChat);
+    } else if (this.error && this.onRerun) {
+      mainActions.push(rerunAction);
     }
 
     if (this.command.isDisplayInput && this.userInput) {

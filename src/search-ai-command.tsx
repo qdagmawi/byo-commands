@@ -21,7 +21,7 @@ import { slotTitle } from "./utils/command-slots";
 export default function EntryPoint(props: CommandLaunchProps) {
   const requestModelId = props.launchContext?.commandId;
   if (requestModelId) {
-    return <CommandView {...props} />;
+    return <CommandView key={`${requestModelId}-${Date.now()}`} {...props} />;
   }
   return <SearchAiCommand />;
 }
@@ -48,6 +48,7 @@ export function SearchAiCommand() {
         onAction={() =>
           navigation.push(
             <CommandView
+              key={`${cmd.id}-${Date.now()}`}
               arguments={{}}
               draftValues={{}}
               launchType={LaunchType.UserInitiated}

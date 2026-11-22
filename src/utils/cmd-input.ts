@@ -18,16 +18,20 @@ export async function fetchContent(source: "clipboard" | "selectedText" | "brows
   if (source === "clipboard") {
     content = (await Clipboard.readText()) || null;
   } else if (source === "selectedText") {
-    // This is a workaround to get the actual selected text;
-    // otherwise, it can return the previously selected text.
+    // Retry with a short delay to allow the OS to complete window focus
+    // and yield the current selection rather than stale text.
     for (let i = 0; i < 7; i++) {
       try {
         content = await getSelectedText();
+        if (content && content.trim().length > 0) {
+          error = null;
+          break;
+        }
       } catch (err) {
         error = getErrorMessage(err, "No text selected. Ensure that the required application is in focus.");
       }
-      if (content !== null) {
-        error = null;
+      if (i < 6) {
+        await new Promise((resolve) => setTimeout(resolve, 50));
       }
     }
   } else {

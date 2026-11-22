@@ -8,7 +8,8 @@ import { readProviders } from "./provider-storage";
 
 // This is a personal local-development integration, not a Store-extension API.
 export async function syncNativeCommands(commands: Record<string, Command>) {
-  if (environment.extensionName !== "personal-ai-commands") return false;
+  if (environment.extensionName !== "personal-ai-commands" && environment.extensionName !== "byo-commands")
+    return false;
   let sourceRoot: string;
   try {
     const config = JSON.parse(await readFile(join(environment.assetsPath, "local-project.json"), "utf8"));
