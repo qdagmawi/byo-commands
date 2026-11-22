@@ -1,8 +1,8 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
-  "name": "personal-ai-commands",
-  "title": "Commands",
-  "description": "Personal AI commands with your own providers and models",
+  "name": "byo-commands",
+  "title": "BYO Commands",
+  "description": "Personal AI commands, quick prompt slots, and chat with your own API keys and models",
   "icon": "icon-teal.png",
   "author": "abielzulio",
   "contributors": [
@@ -68,6 +68,10 @@
             {
               "title": "Default Provider",
               "value": "default"
+            },
+            {
+              "title": "Gemini",
+              "value": "d5c4345a-171c-40cc-bbb7-eac0c3c53c97"
             }
           ]
         },
@@ -143,6 +147,10 @@
             {
               "title": "Default Provider",
               "value": "default"
+            },
+            {
+              "title": "Gemini",
+              "value": "d5c4345a-171c-40cc-bbb7-eac0c3c53c97"
             }
           ]
         },
@@ -218,6 +226,168 @@
             {
               "title": "Default Provider",
               "value": "default"
+            },
+            {
+              "title": "Gemini",
+              "value": "d5c4345a-171c-40cc-bbb7-eac0c3c53c97"
+            }
+          ]
+        },
+        {
+          "name": "aiPromptOverride",
+          "title": "Prompt Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to use the prompt saved in Edit AI Command."
+        },
+        {
+          "name": "aiModelOverride",
+          "title": "Model ID Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to follow this command's saved model configuration."
+        },
+        {
+          "name": "aiTemperatureOverride",
+          "title": "Temperature Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Optional number from 0 to 2. Leave blank to use the saved setting."
+        },
+        {
+          "name": "aiSourceOverride",
+          "title": "Input Source",
+          "description": "Follow the saved input source or override it for this command.",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Selected Text",
+              "value": "selectedText"
+            },
+            {
+              "title": "Clipboard",
+              "value": "clipboard"
+            },
+            {
+              "title": "Browser Tab",
+              "value": "browserTab"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "custom-ai-7eb9eb4e3034800d5f3fd167",
+      "title": "Rewriter",
+      "description": "Run this saved AI command. Expand its settings for command-specific overrides.",
+      "mode": "view",
+      "subtitle": "Commands",
+      "icon": "command-icons/action.png",
+      "preferences": [
+        {
+          "name": "aiProviderOverride",
+          "title": "Provider",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "description": "Use this command's saved provider or override it here. Choose a matching model ID when changing providers.",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Default Provider",
+              "value": "default"
+            },
+            {
+              "title": "Gemini",
+              "value": "d5c4345a-171c-40cc-bbb7-eac0c3c53c97"
+            }
+          ]
+        },
+        {
+          "name": "aiPromptOverride",
+          "title": "Prompt Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to use the prompt saved in Edit AI Command."
+        },
+        {
+          "name": "aiModelOverride",
+          "title": "Model ID Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Leave blank to follow this command's saved model configuration."
+        },
+        {
+          "name": "aiTemperatureOverride",
+          "title": "Temperature Override",
+          "type": "textfield",
+          "required": false,
+          "description": "Optional number from 0 to 2. Leave blank to use the saved setting."
+        },
+        {
+          "name": "aiSourceOverride",
+          "title": "Input Source",
+          "description": "Follow the saved input source or override it for this command.",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Selected Text",
+              "value": "selectedText"
+            },
+            {
+              "title": "Clipboard",
+              "value": "clipboard"
+            },
+            {
+              "title": "Browser Tab",
+              "value": "browserTab"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "custom-ai-88cb05ccc556d8b019b16954",
+      "title": "Explainer",
+      "description": "Run this saved AI command. Expand its settings for command-specific overrides.",
+      "mode": "view",
+      "subtitle": "Commands",
+      "icon": "command-icons/action.png",
+      "preferences": [
+        {
+          "name": "aiProviderOverride",
+          "title": "Provider",
+          "type": "dropdown",
+          "required": false,
+          "default": "saved",
+          "description": "Use this command's saved provider or override it here. Choose a matching model ID when changing providers.",
+          "data": [
+            {
+              "title": "Use Saved Command",
+              "value": "saved"
+            },
+            {
+              "title": "Default Provider",
+              "value": "default"
+            },
+            {
+              "title": "Gemini",
+              "value": "d5c4345a-171c-40cc-bbb7-eac0c3c53c97"
             }
           ]
         },

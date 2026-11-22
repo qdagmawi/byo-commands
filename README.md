@@ -1,6 +1,6 @@
-# Commands
+# BYO Commands
 
-Reusable AI commands for Raycast on Windows, using your own model-provider connections.
+Reusable AI commands, quick prompt slots, and chat for Raycast, using your own model-provider connections (Gemini, OpenAI, Claude, Ollama, and local models).
 
 ## Included defaults
 
